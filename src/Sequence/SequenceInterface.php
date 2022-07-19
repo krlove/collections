@@ -12,10 +12,8 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
 {
     public function clear(): void;
     public function copy(): self;
-    public function count(): int;
     public function first();
     public function get(int $index);
-    public function getIterator();
     public function getType(): string;
     public function has(int $index): bool;
     public function hasEntry($entry): bool;

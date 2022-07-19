@@ -17,16 +17,9 @@ class FloatKeyMap extends AbstractScalarKeyMap
         $this->keyType = new FloatType();
     }
 
-    public function set($key, $value): void
+    public function count(): int
     {
-        $this->assertNotFrozen();
-
-        $this->keyType->assertIsTypeOf($key);
-        $this->valueType->assertIsTypeOf($value);
-
-        $key = $this->normalizeKey($key);
-
-        $this->array[$key] = $value;
+        return count($this->array);
     }
 
     public function get($key)
@@ -47,6 +40,22 @@ class FloatKeyMap extends AbstractScalarKeyMap
         return array_key_exists($key, $this->array);
     }
 
+    public function keyOf($value)
+    {
+        $key = array_search($value, $this->array, true);
+
+        if ($key === false) {
+            return null;
+        }
+
+        return $this->denormalizeKey($key);
+    }
+
+    public function keys(): array
+    {
+        return array_keys($this->toArray());
+    }
+
     public function remove($key): bool
     {
         $this->assertNotFrozen();
@@ -62,15 +71,16 @@ class FloatKeyMap extends AbstractScalarKeyMap
         return false;
     }
 
-    public function keyOf($value)
+    public function set($key, $value): void
     {
-        $key = array_search($value, $this->array, true);
+        $this->assertNotFrozen();
 
-        if ($key === false) {
-            return null;
-        }
+        $this->keyType->assertIsTypeOf($key);
+        $this->valueType->assertIsTypeOf($value);
 
-        return $this->denormalizeKey($key);
+        $key = $this->normalizeKey($key);
+
+        $this->array[$key] = $value;
     }
 
     public function toArray(): array
@@ -82,16 +92,6 @@ class FloatKeyMap extends AbstractScalarKeyMap
         }
 
         return $pairs;
-    }
-
-    public function keys(): array
-    {
-        return array_keys($this->toArray());
-    }
-
-    public function count(): int
-    {
-        return count($this->array);
     }
 
     protected function normalizeKey(float $key): string

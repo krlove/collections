@@ -37,9 +37,9 @@ abstract class AbstractMap implements MapInterface
         return (string) $this->valueType;
     }
 
-    public function isOf(string $keyType, string $valueType): bool
+    public function isEmpty(): bool
     {
-        return $this->isKeyOf($keyType) && $this->isValueOf($valueType);
+        return $this->count() === 0;
     }
 
     public function isKeyOf(string $type): bool
@@ -50,6 +50,11 @@ abstract class AbstractMap implements MapInterface
     public function isValueOf(string $type): bool
     {
         return $this->getValueType() === $type;
+    }
+
+    public function isOf(string $keyType, string $valueType): bool
+    {
+        return $this->isKeyOf($keyType) && $this->isValueOf($valueType);
     }
 
     public function removeValue($value): bool
@@ -63,10 +68,5 @@ abstract class AbstractMap implements MapInterface
         }
 
         return false;
-    }
-
-    public function isEmpty(): bool
-    {
-        return $this->count() === 0;
     }
 }

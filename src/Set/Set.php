@@ -64,6 +64,11 @@ class Set implements SetInterface
         return $set;
     }
 
+    public function count()
+    {
+        return $this->map->count();
+    }
+
     public function difference(SetInterface $set): ?SetInterface
     {
         $diffSet = self::of($this->getType());
@@ -75,6 +80,11 @@ class Set implements SetInterface
         }
 
         return $diffSet;
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->map->keys());
     }
 
     public function getType(): string
@@ -190,15 +200,5 @@ class Set implements SetInterface
         }
 
         return $unionSet;
-    }
-
-    public function getIterator()
-    {
-        return new ArrayIterator($this->map->keys());
-    }
-
-    public function count()
-    {
-        return $this->map->count();
     }
 }

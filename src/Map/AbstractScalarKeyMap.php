@@ -19,6 +19,71 @@ abstract class AbstractScalarKeyMap extends AbstractMap
         $this->valueType = $valueType;
     }
 
+    public function clear(): void
+    {
+        $this->assertNotFrozen();
+
+        $this->array = [];
+    }
+
+    public function count(): int
+    {
+        return count($this->array);
+    }
+
+    public function get($key)
+    {
+        if (!$this->has($key)) {
+            throw new OutOfBoundsException(sprintf('Key %d does not exist', $key));
+        }
+
+        return $this->array[$key];
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->array);
+    }
+
+    public function has($key): bool
+    {
+        return array_key_exists($key, $this->array);
+    }
+
+    public function hasValue($value): bool
+    {
+        return $this->keyOf($value) !== null;
+    }
+
+    public function keyOf($value)
+    {
+        $key = array_search($value, $this->array, true);
+
+        if ($key === false) {
+            return null;
+        }
+
+        return $key;
+    }
+
+    public function keys(): array
+    {
+        return array_keys($this->array);
+    }
+
+    public function remove($key): bool
+    {
+        $this->assertNotFrozen();
+
+        if ($this->has($key)) {
+            unset($this->array[$key]);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function set($key, $value): void
     {
         $this->assertNotFrozen();
@@ -38,49 +103,6 @@ abstract class AbstractScalarKeyMap extends AbstractMap
         }
     }
 
-    public function get($key)
-    {
-        if (!$this->has($key)) {
-            throw new OutOfBoundsException(sprintf('Key %d does not exist', $key));
-        }
-
-        return $this->array[$key];
-    }
-
-    public function has($key): bool
-    {
-        return array_key_exists($key, $this->array);
-    }
-
-    public function hasValue($value): bool
-    {
-        return $this->keyOf($value) !== null;
-    }
-
-    public function remove($key): bool
-    {
-        $this->assertNotFrozen();
-
-        if ($this->has($key)) {
-            unset($this->array[$key]);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function keyOf($value)
-    {
-        $key = array_search($value, $this->array, true);
-
-        if ($key === false) {
-            return null;
-        }
-
-        return $key;
-    }
-
     public function toArray(): array
     {
         $pairs = [];
@@ -92,30 +114,8 @@ abstract class AbstractScalarKeyMap extends AbstractMap
         return $pairs;
     }
 
-    public function keys(): array
-    {
-        return array_keys($this->array);
-    }
-
     public function values(): array
     {
         return array_values($this->array);
-    }
-
-    public function clear(): void
-    {
-        $this->assertNotFrozen();
-
-        $this->array = [];
-    }
-
-    public function count(): int
-    {
-        return count($this->array);
-    }
-
-    public function getIterator()
-    {
-        return new ArrayIterator($this->array);
     }
 }

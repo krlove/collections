@@ -21,19 +21,14 @@ abstract class AbstractObjectKeyMap extends AbstractMap
         $this->objectStorage = new SplObjectStorage();
     }
 
-    public function set($key, $value): void
+    public function clear(): void
     {
-        $this->assertNotFrozen();
-
-        $this->keyType->assertIsTypeOf($key);
-        $this->valueType->assertIsTypeOf($value);
-
-        $this->objectStorage->attach($key, $value);
+        $this->objectStorage->removeAll($this->objectStorage);
     }
 
-    public function setMultiple(array $array): void
+    public function count(): int
     {
-        throw new CollectionException('Method setMultiple is not supported by Map with object keys');
+        return $this->objectStorage->count();
     }
 
     public function get($key)
@@ -43,6 +38,11 @@ abstract class AbstractObjectKeyMap extends AbstractMap
         }
 
         return $this->objectStorage->offsetGet($key);
+    }
+
+    public function getIterator()
+    {
+        return new ObjectStorageIterator($this->objectStorage);
     }
 
     public function has($key): bool
@@ -60,21 +60,11 @@ abstract class AbstractObjectKeyMap extends AbstractMap
             return false;
         }
 
+        // todo check this
         foreach ($this->objectStorage as $object => $info) {
             if ($info === $value) {
                 return true;
             }
-        }
-
-        return false;
-    }
-
-    public function remove($key): bool
-    {
-        if ($this->has($key)) {
-            $this->objectStorage->offsetUnset($key);
-
-            return true;
         }
 
         return false;
@@ -95,6 +85,37 @@ abstract class AbstractObjectKeyMap extends AbstractMap
         return null;
     }
 
+    public function keys(): array
+    {
+        return iterator_to_array($this->objectStorage);
+    }
+
+    public function remove($key): bool
+    {
+        if ($this->has($key)) {
+            $this->objectStorage->offsetUnset($key);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function set($key, $value): void
+    {
+        $this->assertNotFrozen();
+
+        $this->keyType->assertIsTypeOf($key);
+        $this->valueType->assertIsTypeOf($value);
+
+        $this->objectStorage->attach($key, $value);
+    }
+
+    public function setMultiple(array $array): void
+    {
+        throw new CollectionException('Method setMultiple is not supported by Map with object keys');
+    }
+
     public function toArray(): array
     {
         $pairs = [];
@@ -106,11 +127,6 @@ abstract class AbstractObjectKeyMap extends AbstractMap
         return $pairs;
     }
 
-    public function keys(): array
-    {
-        return iterator_to_array($this->objectStorage);
-    }
-
     public function values(): array
     {
         $values = [];
@@ -120,20 +136,5 @@ abstract class AbstractObjectKeyMap extends AbstractMap
         }
 
         return $values;
-    }
-
-    public function clear(): void
-    {
-        $this->objectStorage->removeAll($this->objectStorage);
-    }
-
-    public function count(): int
-    {
-        return $this->objectStorage->count();
-    }
-
-    public function getIterator()
-    {
-        return new ObjectStorageIterator($this->objectStorage);
     }
 }
