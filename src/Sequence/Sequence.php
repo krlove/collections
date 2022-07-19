@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Sequence;
 
-use Krlove\Collection\Copyable\CopyTrait;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Iterator\DoublyLinkedListIterator;
@@ -14,7 +13,6 @@ use SplDoublyLinkedList;
 
 class Sequence implements SequenceInterface
 {
-    use CopyTrait;
     use FreezeTrait;
 
     private SplDoublyLinkedList $list;
@@ -36,6 +34,17 @@ class Sequence implements SequenceInterface
         $this->assertNotFrozen();
 
         $this->list = new SplDoublyLinkedList();
+    }
+
+    public function copy(): self
+    {
+        $sequence = Sequence::of($this->getType());
+
+        foreach ($this as $entry) {
+            $sequence->push($entry);
+        }
+
+        return $sequence;
     }
 
     public function count(): int

@@ -10,9 +10,9 @@ class Map implements MapInterface
 {
     private MapInterface $realMap;
 
-    private function __construct(MapInterface $keyMap)
+    private function __construct(MapInterface $realMap)
     {
-        $this->realMap = $keyMap;
+        $this->realMap = $realMap;
     }
 
     public static function of(string $keyType, string $valueType): self
@@ -22,6 +22,13 @@ class Map implements MapInterface
         }
 
         return new self(MapFactory::create($keyType, $valueType));
+    }
+
+    public function copy(): self
+    {
+        $realMap = $this->realMap->copy();
+
+        return new Map($realMap);
     }
 
     public function isOf(string $keyType, string $valueType): bool

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Krlove\Collection\Set;
 
 use ArrayIterator;
-use Krlove\Collection\Copyable\CopyTrait;
 use Krlove\Collection\Exception\InvalidArgumentException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
@@ -13,7 +12,6 @@ use Krlove\Collection\Map\MapInterface;
 
 class Set implements SetInterface
 {
-    use CopyTrait;
     use FreezeTrait;
 
     private MapInterface $map;
@@ -53,6 +51,17 @@ class Set implements SetInterface
         $this->assertNotFrozen();
 
         $this->map->clear();
+    }
+
+    public function copy(): self
+    {
+        $set = Set::of($this->getType());
+
+        foreach ($this as $member) {
+            $set->add($member);
+        }
+
+        return $set;
     }
 
     public function difference(SetInterface $set): ?SetInterface
