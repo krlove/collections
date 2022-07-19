@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Krlove\Collection\Type;
 
 class TypeFactory

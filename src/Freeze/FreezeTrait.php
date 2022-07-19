@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Krlove\Collection\Freeze;
 
 use Krlove\Collection\Exception\FrozenException;
