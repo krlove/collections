@@ -24,11 +24,11 @@ class Set implements SetInterface
 
     public static function of(string $type): self
     {
-        if (in_array($type, ['null', 'bool', 'iterable', 'callable', 'resource'])) {
-            throw new InvalidArgumentException('Type %s is not supported as a Set members type', $type);
+        if (in_array($type, ['null', 'bool', 'iterable', 'callable', 'resource', 'mixed'])) {
+            throw new InvalidArgumentException(sprintf('Type %s is not supported as a Set members type', $type));
         }
 
-        return new self(MapFactory::create($type, new NullType()));
+        return new self(MapFactory::create($type, 'null'));
     }
 
     public function add($member): void

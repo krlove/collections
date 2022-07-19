@@ -17,7 +17,7 @@ class Map implements MapInterface
 
     public static function of(string $keyType, string $valueType): self
     {
-        if (in_array($keyType, ['null', 'bool', 'iterable', 'callable', 'resource'])) {
+        if (in_array($keyType, ['null', 'bool', 'iterable', 'callable', 'resource', 'mixed'])) {
             throw new InvalidArgumentException('Type %s is not supported as a Map keys type', $keyType);
         }
 
