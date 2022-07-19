@@ -10,23 +10,23 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
 {
     public function add($entry): void;
     public function addMultiple(array $entries): void;
-    public function isOf(string $type): bool;
+    public function clear(): void;
+    public function count(): int;
+    public function first();
     public function get(int $index);
+    public function getIterator();
     public function getType(): string;
     public function has(int $index): bool;
     public function hasEntry($entry): bool;
-    public function first();
-    public function last();
-    public function toArray(): array;
     public function indexOf($entry): ?int;
-    public function remove(int $index): bool;
-    public function removeEntry($entry): bool;
-    public function clear(): void;
     public function isEmpty(): bool;
-    public function count(): int;
-    public function getIterator();
+    public function isOf(string $type): bool;
+    public function last();
     public function pop();
     public function push($entry): void;
+    public function remove(int $index): bool;
+    public function removeEntry($entry): bool;
     public function shift();
+    public function toArray(): array;
     public function unshift($entry): void;
 }

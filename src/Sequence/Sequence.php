@@ -32,11 +32,6 @@ class Sequence implements SequenceInterface
         return new self(TypeFactory::create($type));
     }
 
-    public function isOf(string $type): bool
-    {
-        return $type === $this->getType();
-    }
-
     public function add($entry): void
     {
         $this->assertNotFrozen();
@@ -55,6 +50,23 @@ class Sequence implements SequenceInterface
         }
     }
 
+    public function clear(): void
+    {
+        $this->assertNotFrozen();
+
+        $this->entries = [];
+    }
+
+    public function count(): int
+    {
+        return count($this->entries);
+    }
+
+    public function first()
+    {
+        return reset($this->entries);
+    }
+
     public function get(int $index)
     {
         if (!$this->has($index)) {
@@ -62,6 +74,11 @@ class Sequence implements SequenceInterface
         }
 
         return $this->entries[$index];
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->entries);
     }
 
     public function getType(): string
@@ -79,21 +96,6 @@ class Sequence implements SequenceInterface
         return in_array($entry, $this->entries, true);
     }
 
-    public function first()
-    {
-        return reset($this->entries);
-    }
-
-    public function last()
-    {
-        return end($this->entries);
-    }
-
-    public function toArray(): array
-    {
-        return $this->entries;
-    }
-
     public function indexOf($entry): ?int
     {
         $index = array_search($entry, $this->entries, true);
@@ -103,6 +105,37 @@ class Sequence implements SequenceInterface
         }
 
         return (int) $index;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->entries);
+    }
+
+    public function isOf(string $type): bool
+    {
+        return $type === $this->getType();
+    }
+
+    public function last()
+    {
+        return end($this->entries);
+    }
+
+    public function pop()
+    {
+        $this->assertNotFrozen();
+
+        return array_pop($this->entries);
+    }
+
+    public function push($entry): void
+    {
+        $this->assertNotFrozen();
+
+        $this->type->assertIsTypeOf($entry);
+
+        array_push($this->entries, $entry);
     }
 
     public function remove(int $index): bool
@@ -133,49 +166,16 @@ class Sequence implements SequenceInterface
         return false;
     }
 
-    public function clear(): void
-    {
-        $this->assertNotFrozen();
-
-        $this->entries = [];
-    }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->entries);
-    }
-
-    public function count(): int
-    {
-        return count($this->entries);
-    }
-
-    public function getIterator()
-    {
-        return new ArrayIterator($this->entries);
-    }
-
-    public function pop()
-    {
-        $this->assertNotFrozen();
-
-        return array_pop($this->entries);
-    }
-
-    public function push($entry): void
-    {
-        $this->assertNotFrozen();
-
-        $this->type->assertIsTypeOf($entry);
-
-        array_push($this->entries, $entry);
-    }
-
     public function shift()
     {
         $this->assertNotFrozen();
 
         return array_shift($this->entries);
+    }
+
+    public function toArray(): array
+    {
+        return $this->entries;
     }
 
     public function unshift($entry): void
