@@ -6,9 +6,10 @@ namespace Krlove\Collection\Map;
 
 use Countable;
 use IteratorAggregate;
+use Krlove\Collection\Copyable\CopyableInterface;
 use Krlove\Collection\Freezable\FreezableInterface;
 
-interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
+interface MapInterface extends CopyableInterface, Countable, FreezableInterface, IteratorAggregate
 {
     public function isOf(string $keyType, string $valueType): bool;
     public function isKeyOf(string $type): bool;

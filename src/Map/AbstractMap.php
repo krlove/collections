@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Map;
 
+use Krlove\Collection\Copyable\CopyTrait;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Type\TypeInterface;
 
 abstract class AbstractMap implements MapInterface
 {
+    use CopyTrait;
     use FreezeTrait;
 
     protected TypeInterface $valueType;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Sequence;
 
+use Krlove\Collection\Copyable\CopyTrait;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Iterator\DoublyLinkedListIterator;
@@ -13,6 +14,7 @@ use SplDoublyLinkedList;
 
 class Sequence implements SequenceInterface
 {
+    use CopyTrait;
     use FreezeTrait;
 
     private SplDoublyLinkedList $list;

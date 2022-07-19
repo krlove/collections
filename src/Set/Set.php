@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Krlove\Collection\Set;
 
 use ArrayIterator;
+use Krlove\Collection\Copyable\CopyTrait;
 use Krlove\Collection\Exception\InvalidArgumentException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
 use Krlove\Collection\Map\MapInterface;
-use Krlove\Collection\Type\NullType;
 
 class Set implements SetInterface
 {
+    use CopyTrait;
     use FreezeTrait;
 
     private MapInterface $map;

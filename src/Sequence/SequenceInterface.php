@@ -6,9 +6,10 @@ namespace Krlove\Collection\Sequence;
 
 use Countable;
 use IteratorAggregate;
+use Krlove\Collection\Copyable\CopyableInterface;
 use Krlove\Collection\Freezable\FreezableInterface;
 
-interface SequenceInterface extends Countable, FreezableInterface, IteratorAggregate
+interface SequenceInterface extends CopyableInterface, Countable, FreezableInterface, IteratorAggregate
 {
     public function clear(): void;
     public function count(): int;
