@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Sequence;
 
-use ArrayIterator;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Freeze\FreezeTrait;
+use Krlove\Collection\Iterator\DoublyLinkedListIterator;
 use Krlove\Collection\Type\TypeFactory;
 use Krlove\Collection\Type\TypeInterface;
-
-use function array_key_exists;
-use function array_search;
-use function count;
-use function end;
-use function in_array;
-use function reset;
+use SplDoublyLinkedList;
 
 class Sequence implements SequenceInterface
 {
     use FreezeTrait;
 
-    private array $entries = [];
+    private SplDoublyLinkedList $list;
     private TypeInterface $type;
 
     private function __construct(TypeInterface $type)
     {
         $this->type = $type;
+        $this->list = new SplDoublyLinkedList();
     }
 
     public static function of(string $type): self
@@ -34,57 +29,39 @@ class Sequence implements SequenceInterface
         return new self(TypeFactory::create($type));
     }
 
-    public function add($entry): void
-    {
-        $this->assertNotFrozen();
-
-        $this->type->assertIsTypeOf($entry);
-
-        $this->entries[] = $entry;
-    }
-
-    public function addMultiple(array $entries): void
-    {
-        $this->assertNotFrozen();
-
-        foreach ($entries as $entry) {
-            $this->add($entry);
-        }
-    }
-
     public function clear(): void
     {
         $this->assertNotFrozen();
 
-        $this->entries = [];
+        $this->list = new SplDoublyLinkedList();
     }
 
     public function count(): int
     {
-        return count($this->entries);
+        return $this->list->count();
     }
 
     public function first()
     {
         if ($this->isEmpty()) {
-            return null;
+            throw new OutOfBoundsException('Unable to retrieve the first entry - sequence is empty');
         }
 
-        return reset($this->entries);
+        return $this->get(0);
     }
 
     public function get(int $index)
     {
         if (!$this->has($index)) {
-            throw new OutOfBoundsException(sprintf('Index %d does not exist', $index));
+            throw new OutOfBoundsException(sprintf('Index %d is out of bounds', $index));
         }
 
-        return $this->entries[$index];
+        return $this->list[$index];
     }
 
     public function getIterator()
     {
-        return new ArrayIterator($this->entries);
+        return new DoublyLinkedListIterator($this->list);
     }
 
     public function getType(): string
@@ -94,28 +71,55 @@ class Sequence implements SequenceInterface
 
     public function has(int $index): bool
     {
-        return array_key_exists($index, $this->entries);
+        return $index >= 0 && $index < $this->list->count();
     }
 
     public function hasEntry($entry): bool
     {
-        return in_array($entry, $this->entries, true);
+        if (!$this->type->isTypeOf($entry)) {
+            return false;
+        }
+
+        foreach ($this->list as $item) {
+            if ($item === $entry) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function indexOf($entry): ?int
     {
-        $index = array_search($entry, $this->entries, true);
-
-        if ($index === false) {
+        if (!$this->type->isTypeOf($entry)) {
             return null;
         }
 
-        return (int) $index;
+        foreach ($this->list as $index => $item) {
+            if ($item === $entry) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
+    public function insert(int $index, $entry): void
+    {
+        $this->assertNotFrozen();
+
+        $this->type->assertIsTypeOf($entry);
+
+        if ($index < 0 || $index > $this->count()) {
+            throw new OutOfBoundsException(sprintf('Index %d is out of bounds', $index));
+        }
+
+        $this->list->add($index, $entry);
     }
 
     public function isEmpty(): bool
     {
-        return empty($this->entries);
+        return $this->count() === 0;
     }
 
     public function isOf(string $type): bool
@@ -126,17 +130,21 @@ class Sequence implements SequenceInterface
     public function last()
     {
         if ($this->isEmpty()) {
-            return null;
+            throw new OutOfBoundsException('Unable to retrieve the last entry - sequence is empty');
         }
 
-        return end($this->entries);
+        return $this->list[$this->count() - 1];
     }
 
     public function pop()
     {
         $this->assertNotFrozen();
 
-        return array_pop($this->entries);
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('Unable to pop an entry - sequence is empty');
+        }
+
+        return $this->list->pop();
     }
 
     public function push($entry): void
@@ -145,32 +153,40 @@ class Sequence implements SequenceInterface
 
         $this->type->assertIsTypeOf($entry);
 
-        array_push($this->entries, $entry);
+        $this->list->push($entry);
+    }
+
+    public function pushMultiple(array $entries): void
+    {
+        $this->assertNotFrozen();
+
+        foreach ($entries as $entry) {
+            $this->push($entry);
+        }
     }
 
     public function remove(int $index): bool
     {
         $this->assertNotFrozen();
 
-        if ($this->has($index)) {
-            unset($this->entries[$index]);
-
-            return true;
+        if (!$this->has($index)) {
+            return false;
         }
 
-        return false;
+        $this->list->offsetUnset($index);
+
+        return true;
     }
 
     public function removeEntry($entry): bool
     {
         $this->assertNotFrozen();
 
+        $this->type->assertIsTypeOf($entry);
+
         $index = $this->indexOf($entry);
-
-        if ($index !== false) {
-            $this->remove($index);
-
-            return true;
+        if ($index !== null) {
+            return $this->remove($index);
         }
 
         return false;
@@ -180,12 +196,16 @@ class Sequence implements SequenceInterface
     {
         $this->assertNotFrozen();
 
-        return array_shift($this->entries);
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('Unable to shift an entry - sequence is empty');
+        }
+
+        return $this->list->shift();
     }
 
     public function toArray(): array
     {
-        return $this->entries;
+        return iterator_to_array($this->getIterator());
     }
 
     public function unshift($entry): void
@@ -194,6 +214,6 @@ class Sequence implements SequenceInterface
 
         $this->type->assertIsTypeOf($entry);
 
-        array_unshift($this->entries, $entry);
+        $this->list->unshift($entry);
     }
 }

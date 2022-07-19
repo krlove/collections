@@ -7,6 +7,7 @@ namespace Tests\Krlove\Sequence;
 use ArrayIterator;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Exception\TypeException;
+use Krlove\Collection\Iterator\DoublyLinkedListIterator;
 use Krlove\Collection\Sequence\Sequence;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\Stub\Obj1;
@@ -53,12 +54,12 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
-    public function testAdd(string $type, $value1, $value2, $value3): void
+    public function testPush(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
-        $sequence->add($value1);
-        $sequence->add($value2);
-        $sequence->add($value3);
+        $sequence->push($value1);
+        $sequence->push($value2);
+        $sequence->push($value3);
 
         self::assertCount(3, $sequence);
         self::assertEquals($value1, $sequence->get(0));
@@ -69,24 +70,24 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider valuesOfWrongTypeProvider
      */
-    public function testAddWrongType(string $type, array $wrongValues): void
+    public function testPushWrongType(string $type, array $wrongValues): void
     {
         self::expectException(TypeException::class);
         self::expectExceptionMessage('Variable must be of type ' . $type);
 
         $sequence = Sequence::of($type);
         foreach ($wrongValues as $wrongValue) {
-            $sequence->add($wrongValue);
+            $sequence->push($wrongValue);
         }
     }
 
     /**
      * @dataProvider typesDataProvider
      */
-    public function testAddMultiple(string $type, $value1, $value2, $value3): void
+    public function testPushMultiple(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
-        $sequence->addMultiple([$value1, $value2, $value3]);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
 
         self::assertCount(3, $sequence);
     }
@@ -97,7 +98,7 @@ class SequenceTest extends TestCase
     public function testClear(string $type, $value1): void
     {
         $sequence = Sequence::of($type);
-        $sequence->add($value1);
+        $sequence->push($value1);
         $sequence->clear();
 
         self::assertCount(0, $sequence);
@@ -110,13 +111,13 @@ class SequenceTest extends TestCase
     {
         $sequence = Sequence::of($type);
         self::assertEquals(0, $sequence->count());
-        $sequence->add($value1);
+        $sequence->push($value1);
         self::assertEquals(1, $sequence->count());
-        $sequence->add($value2);
+        $sequence->push($value2);
         self::assertEquals(2, $sequence->count());
         $sequence->remove(0);
         self::assertEquals(1, $sequence->count());
-        $sequence->remove(1);
+        $sequence->remove(0);
         self::assertEquals(0, $sequence->count());
     }
 
@@ -126,12 +127,14 @@ class SequenceTest extends TestCase
     public function testFirst(string $type, $value1, $value2): void
     {
         $sequence = Sequence::of($type);
-        $sequence->addMultiple([$value1, $value2]);
+        $sequence->pushMultiple([$value1, $value2]);
         self::assertEquals($value1, $sequence->first());
         $sequence->remove(0);
         self::assertEquals($value2, $sequence->first());
-        $sequence->remove(1);
-        self::assertNull($sequence->first());
+        $sequence->remove(0);
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Unable to retrieve the first entry - sequence is empty');
+        $sequence->first();
     }
 
     /**
@@ -140,14 +143,14 @@ class SequenceTest extends TestCase
     public function testGet(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
-        $sequence->addMultiple([$value1, $value2, $value3]);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
         self::assertEquals($value1, $sequence->get(0));
         self::assertEquals($value2, $sequence->get(1));
         self::assertEquals($value3, $sequence->get(2));
 
         self::expectException(OutOfBoundsException::class);
-        self::expectExceptionMessage('Index 4 does not exist');
-        $sequence->get(4);
+        self::expectExceptionMessage('Index 3 is out of bounds');
+        $sequence->get(3);
     }
 
     /**
@@ -156,7 +159,7 @@ class SequenceTest extends TestCase
     public function testGetIterator(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
-        $sequence->addMultiple([$value1, $value2, $value3]);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
 
         $i = 0;
         foreach ($sequence as $key => $value) {
@@ -166,7 +169,7 @@ class SequenceTest extends TestCase
         }
 
         $iterator = $sequence->getIterator();
-        self::assertInstanceOf(ArrayIterator::class, $iterator);
+        self::assertInstanceOf(DoublyLinkedListIterator::class, $iterator);
     }
 
     /**
@@ -184,14 +187,14 @@ class SequenceTest extends TestCase
     public function testHas(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
-        $sequence->addMultiple([$value1, $value2, $value3]);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
         self::assertTrue($sequence->has(0));
         self::assertTrue($sequence->has(1));
         self::assertTrue($sequence->has(2));
         self::assertFalse($sequence->has(-1));
         self::assertFalse($sequence->has(4));
         $sequence->remove(1);
-        self::assertFalse($sequence->has(1));
+        self::assertTrue($sequence->has(1));
     }
 
     public function typesDataProvider(): array
