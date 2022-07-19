@@ -6,7 +6,7 @@ namespace Krlove\Collection\Map;
 
 use Countable;
 use IteratorAggregate;
-use Krlove\Collection\Freeze\FreezableInterface;
+use Krlove\Collection\Freezable\FreezableInterface;
 
 interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
 {

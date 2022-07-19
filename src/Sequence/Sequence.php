@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Krlove\Collection\Sequence;
 
 use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Freeze\FreezeTrait;
+use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Iterator\DoublyLinkedListIterator;
 use Krlove\Collection\Type\TypeFactory;
 use Krlove\Collection\Type\TypeInterface;

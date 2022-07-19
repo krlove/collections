@@ -6,7 +6,7 @@ namespace Krlove\Collection\Set;
 
 use ArrayIterator;
 use Krlove\Collection\Exception\InvalidArgumentException;
-use Krlove\Collection\Freeze\FreezeTrait;
+use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
 use Krlove\Collection\Map\MapInterface;
 use Krlove\Collection\Type\NullType;

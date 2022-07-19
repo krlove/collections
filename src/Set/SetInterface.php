@@ -6,7 +6,7 @@ namespace Krlove\Collection\Set;
 
 use Countable;
 use IteratorAggregate;
-use Krlove\Collection\Freeze\FreezableInterface;
+use Krlove\Collection\Freezable\FreezableInterface;
 
 interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 {
