@@ -96,6 +96,7 @@ class FloatKeyMap extends AbstractScalarKeyMap
 
     protected function normalizeKey(float $key): string
     {
+        // todo is this cast needed?
         return (string) floatval($key);
     }
 
