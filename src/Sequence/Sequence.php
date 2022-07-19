@@ -66,6 +66,10 @@ class Sequence implements SequenceInterface
 
     public function first()
     {
+        if ($this->isEmpty()) {
+            return null;
+        }
+
         return reset($this->entries);
     }
 
@@ -121,6 +125,10 @@ class Sequence implements SequenceInterface
 
     public function last()
     {
+        if ($this->isEmpty()) {
+            return null;
+        }
+
         return end($this->entries);
     }
 

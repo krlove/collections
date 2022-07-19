@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Krlove\Sequence;
 
 use ArrayIterator;
+use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Sequence\Sequence;
 use PHPUnit\Framework\TestCase;
@@ -65,27 +66,139 @@ class SequenceTest extends TestCase
         self::assertEquals($value3, $sequence->get(2));
     }
 
-    public function testAddWrongType(): void
+    /**
+     * @dataProvider valuesOfWrongTypeProvider
+     */
+    public function testAddWrongType(string $type, array $wrongValues): void
     {
         self::expectException(TypeException::class);
-        self::expectExceptionMessage('Variable must be of type float');
+        self::expectExceptionMessage('Variable must be of type ' . $type);
 
-        $sequence = Sequence::of('float');
-        $sequence->add(1);
+        $sequence = Sequence::of($type);
+        foreach ($wrongValues as $wrongValue) {
+            $sequence->add($wrongValue);
+        }
+    }
 
-        self::expectException(TypeException::class);
-        self::expectExceptionMessage('Variable must be of type \Tests\Krlove\Stub\Key');
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testAddMultiple(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->addMultiple([$value1, $value2, $value3]);
 
-        $sequence = Sequence::of(Obj1::class);
-        $sequence->add(1);
+        self::assertCount(3, $sequence);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testClear(string $type, $value1): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->add($value1);
+        $sequence->clear();
+
+        self::assertCount(0, $sequence);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testCount(string $type, $value1, $value2): void
+    {
+        $sequence = Sequence::of($type);
+        self::assertEquals(0, $sequence->count());
+        $sequence->add($value1);
+        self::assertEquals(1, $sequence->count());
+        $sequence->add($value2);
+        self::assertEquals(2, $sequence->count());
+        $sequence->remove(0);
+        self::assertEquals(1, $sequence->count());
+        $sequence->remove(1);
+        self::assertEquals(0, $sequence->count());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testFirst(string $type, $value1, $value2): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->addMultiple([$value1, $value2]);
+        self::assertEquals($value1, $sequence->first());
+        $sequence->remove(0);
+        self::assertEquals($value2, $sequence->first());
+        $sequence->remove(1);
+        self::assertNull($sequence->first());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testGet(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->addMultiple([$value1, $value2, $value3]);
+        self::assertEquals($value1, $sequence->get(0));
+        self::assertEquals($value2, $sequence->get(1));
+        self::assertEquals($value3, $sequence->get(2));
+
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Index 4 does not exist');
+        $sequence->get(4);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testGetIterator(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->addMultiple([$value1, $value2, $value3]);
+
+        $i = 0;
+        foreach ($sequence as $key => $value) {
+            self::assertEquals($i, $key);
+            self::assertEquals($value, ${'value' . ($i + 1)});
+            $i++;
+        }
+
+        $iterator = $sequence->getIterator();
+        self::assertInstanceOf(ArrayIterator::class, $iterator);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testGetType(string $type): void
+    {
+        $sequence = Sequence::of($type);
+        self::assertEquals($type, $sequence->getType());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testHas(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->addMultiple([$value1, $value2, $value3]);
+        self::assertTrue($sequence->has(0));
+        self::assertTrue($sequence->has(1));
+        self::assertTrue($sequence->has(2));
+        self::assertFalse($sequence->has(-1));
+        self::assertFalse($sequence->has(4));
+        $sequence->remove(1);
+        self::assertFalse($sequence->has(1));
     }
 
     public function typesDataProvider(): array
     {
-        $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
-        $r2 = fopen(__DIR__ . '/../resources/test.txt', 'r+');
-        $r3 = fopen(__DIR__ . '/../resources/test.txt', 'w');
-        $this->resources = [$r1, $r2, $r3];
+        $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
+        $this->resources[] = $r2 = fopen(__DIR__ . '/../resources/test.txt', 'r+');
+        $this->resources[] = $r3 = fopen(__DIR__ . '/../resources/test.txt', 'w');
 
         return [
             'null' => [
@@ -148,13 +261,48 @@ class SequenceTest extends TestCase
                 'value2' => new Obj1(2),
                 'value3' => new Obj1(3),
             ],
+            'mixed' => [
+                'type' => 'mixed',
+                'value1' => true,
+                'value2' => 'Harry',
+                'value3' => new Obj1(1),
+            ],
         ];
     }
 
     public function valuesOfWrongTypeProvider(): array
     {
-        return [
-            // continue here
+        $r = fopen(__DIR__ . '/../resources/test.txt', 'r');
+        $this->resources[] = $r;
+
+        $typeValues = [
+            'null' => null,
+            'bool' => true,
+            'int' => 100,
+            'float' => 1e5,
+            'string' => 'Harry',
+            'object' => new Obj1(1),
+            'iterable' => ['foo' => 'bar'],
+            'resource' => $r,
+            'callable' => function () {},
+            Obj2::class => new Obj2(2),
         ];
+
+        $data = [];
+        foreach ($typeValues as $key => $value) {
+            $wrongValues = [];
+            foreach ($typeValues as $type => $wrongValue) {
+                if ($type === $key) {
+                    continue;
+                }
+                $wrongValues[] = $wrongValue;
+            }
+            $data[$key] = [
+                'type' => $key,
+                'wrongValues' => $wrongValues,
+            ];
+        }
+
+        return $data;
     }
 }
