@@ -4,6 +4,11 @@
             "Krlove\\Collection\\": "./src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Krlove\\Tests\\": "./tests"
+        }
+    },
     "require": {
         "php": ">=7.4"
     },
