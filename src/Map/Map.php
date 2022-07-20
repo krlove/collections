@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Map;
 
-use Krlove\Collection\Exception\InvalidArgumentException;
-
 class Map implements MapInterface
 {
     private MapInterface $realMap;
@@ -17,10 +15,6 @@ class Map implements MapInterface
 
     public static function of(string $keyType, string $valueType): self
     {
-        if (in_array($keyType, ['null', 'bool', 'iterable', 'callable', 'resource', 'mixed'])) {
-            throw new InvalidArgumentException('Type %s is not supported as a Map keys type', $keyType);
-        }
-
         return new self(MapFactory::create($keyType, $valueType));
     }
 

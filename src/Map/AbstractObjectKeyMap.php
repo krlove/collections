@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Krlove\Collection\Map;
 
 use Krlove\Collection\Exception\CollectionException;
-use Krlove\Collection\Exception\InvalidArgumentException;
 use Krlove\Collection\Exception\OutOfBoundsException;
+use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Iterator\ObjectStorageIterator;
 use Krlove\Collection\Type\TypeInterface;
 use SplObjectStorage;
@@ -48,7 +48,7 @@ abstract class AbstractObjectKeyMap extends AbstractMap
     public function has($key): bool
     {
         if (!is_object($key)) {
-            throw new InvalidArgumentException('Key must be an object');
+            throw new TypeException('Key must be an object');
         }
 
         return $this->objectStorage->contains($key);

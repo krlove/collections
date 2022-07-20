@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Krlove\Collection\Set;
 
 use ArrayIterator;
-use Krlove\Collection\Exception\InvalidArgumentException;
+use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
 use Krlove\Collection\Map\MapInterface;
@@ -23,11 +23,24 @@ class Set implements SetInterface
 
     public static function of(string $type): self
     {
-        if (in_array($type, ['null', 'bool', 'iterable', 'callable', 'resource', 'mixed'])) {
-            throw new InvalidArgumentException(sprintf('Type %s is not supported as a Set members type', $type));
+        try {
+            return new self(MapFactory::create($type, 'null'));
+        } catch (TypeException $e) {
+            switch ($e->getCode()) {
+                case TypeException::CODE_NULLABLE_KEY_NOT_ALLOWED:
+                    throw new TypeException(
+                        'Nullable types are not allowed as a Set members type',
+                        $e->getCode()
+                    );
+                case TypeException::CODE_KEY_TYPE_NOT_SUPPORTED:
+                    throw new TypeException(
+                        sprintf('Type %s is not supported as a Set members type', $type),
+                        $e->getCode()
+                    );
+                default:
+                    throw $e;
+            }
         }
-
-        return new self(MapFactory::create($type, 'null'));
     }
 
     public function add($member): void
@@ -189,7 +202,7 @@ class Set implements SetInterface
     public function union(SetInterface $set): SetInterface
     {
         if ($this->getType() !== $set->getType()) {
-            throw new InvalidArgumentException(
+            throw new TypeException(
                 sprintf('Union of sets of types %s and %s is not supported', $this->getType(), $set->getType())
             );
         }

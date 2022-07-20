@@ -8,31 +8,38 @@ class TypeFactory
 {
     public static function create(string $type): TypeInterface
     {
+        if ($type[0] === '?') {
+            $isNullable = true;
+            $type = substr($type, 1);
+        } else {
+            $isNullable = false;
+        }
+        
         switch ($type) {
             case 'mixed':
-                return new MixedType();
+                return new MixedType($isNullable);
             case 'bool':
-                return new BoolType();
+                return new BoolType($isNullable);
             case 'int':
-                return new IntType();
+                return new IntType($isNullable);
             case 'float':
-                return new FloatType();
+                return new FloatType($isNullable);
             case 'string':
-                return new StringType();
+                return new StringType($isNullable);
             case 'array':
-                return new ArrayType();
+                return new ArrayType($isNullable);
             case 'object':
-                return new ObjectType();
+                return new ObjectType($isNullable);
             case 'resource':
-                return new ResourceType();
+                return new ResourceType($isNullable);
             case 'callable':
-                return new CallableType();
+                return new CallableType($isNullable);
             case 'iterable':
-                return new IterableType();
+                return new IterableType($isNullable);
             case 'null':
-                return new NullType();
+                return new NullType($isNullable);
             default:
-                return new ClassType($type);
+                return new ClassType($type, $isNullable);
         }
     }
 }

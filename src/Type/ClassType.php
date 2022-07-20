@@ -10,8 +10,10 @@ class ClassType extends AbstractType
 {
     private string $class;
 
-    public function __construct(string $class)
+    public function __construct(string $class, bool $nullable = false)
     {
+        parent::__construct($nullable);
+
         if (!class_exists($class) && !interface_exists($class)) {
             throw new TypeException(sprintf('Class or interface %s does not exist', $class));
         }
