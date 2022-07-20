@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Tests\Krlove\Sequence;
 
 use ArrayIterator;
+use Exception;
+use Krlove\Collection\Exception\FrozenException;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Iterator\DoublyLinkedListIterator;
 use Krlove\Collection\Sequence\Sequence;
+use Krlove\Collection\Set\Set;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\Stub\Obj1;
 use Tests\Krlove\Stub\Obj2;
@@ -54,47 +57,6 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
-    public function testPush(string $type, $value1, $value2, $value3): void
-    {
-        $sequence = Sequence::of($type);
-        $sequence->push($value1);
-        $sequence->push($value2);
-        $sequence->push($value3);
-
-        self::assertCount(3, $sequence);
-        self::assertEquals($value1, $sequence->get(0));
-        self::assertEquals($value2, $sequence->get(1));
-        self::assertEquals($value3, $sequence->get(2));
-    }
-
-    /**
-     * @dataProvider valuesOfWrongTypeProvider
-     */
-    public function testPushWrongType(string $type, array $wrongValues): void
-    {
-        self::expectException(TypeException::class);
-        self::expectExceptionMessage('Variable must be of type ' . $type);
-
-        $sequence = Sequence::of($type);
-        foreach ($wrongValues as $wrongValue) {
-            $sequence->push($wrongValue);
-        }
-    }
-
-    /**
-     * @dataProvider typesDataProvider
-     */
-    public function testPushMultiple(string $type, $value1, $value2, $value3): void
-    {
-        $sequence = Sequence::of($type);
-        $sequence->pushMultiple([$value1, $value2, $value3]);
-
-        self::assertCount(3, $sequence);
-    }
-
-    /**
-     * @dataProvider typesDataProvider
-     */
     public function testClear(string $type, $value1): void
     {
         $sequence = Sequence::of($type);
@@ -102,6 +64,20 @@ class SequenceTest extends TestCase
         $sequence->clear();
 
         self::assertCount(0, $sequence);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testCopy(string $type, $value1): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push($value1);
+
+        $copy = $sequence->copy();
+        self::assertNotSame($sequence, $copy);
+        self::assertCount(1, $copy);
+        self::assertSame($value1, $copy->first());
     }
 
     /**
@@ -135,6 +111,65 @@ class SequenceTest extends TestCase
         self::expectException(OutOfBoundsException::class);
         self::expectExceptionMessage('Unable to retrieve the first entry - sequence is empty');
         $sequence->first();
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testFreeze(string $type, $value1): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push($value1);
+        $sequence->freeze();
+        self::assertTrue($sequence->isFrozen());
+
+        $thrownExceptions = [];
+
+        try {
+            $sequence->push(1);
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->pushMultiple([1,2,3]);
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->clear();
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->pop();
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->shift();
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->remove(0);
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->removeEntry($value1);
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
+            $sequence->insert(1, $value1);
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+
+        self::assertCount(8, $thrownExceptions);
+        foreach ($thrownExceptions as $exception) {
+            self::assertInstanceOf(FrozenException::class, $exception);
+        }
     }
 
     /**
@@ -197,6 +232,77 @@ class SequenceTest extends TestCase
         self::assertTrue($sequence->has(1));
     }
 
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testHasEntry(string $type, $value1): void
+    {
+        $sequence = Sequence::of($type);
+        self::assertFalse($sequence->hasEntry($value1));
+        $sequence->push($value1);
+        self::assertTrue($sequence->hasEntry($value1));
+        $sequence->removeEntry($value1);
+        self::assertFalse($sequence->hasEntry($value1));
+        $sequence->push($value1);
+        $sequence->push($value1);
+        $sequence->removeEntry($value1);
+        self::assertTrue($sequence->hasEntry($value1));
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testIndexOf(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3, $value1]);
+
+        self::assertEquals(0, $sequence->indexOf($value1));
+        $sequence->remove(0);
+        self::assertEquals(0, $sequence->indexOf($value2));
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testPush(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push($value1);
+        $sequence->push($value2);
+        $sequence->push($value3);
+
+        self::assertCount(3, $sequence);
+        self::assertEquals($value1, $sequence->get(0));
+        self::assertEquals($value2, $sequence->get(1));
+        self::assertEquals($value3, $sequence->get(2));
+    }
+
+    /**
+     * @dataProvider valuesOfWrongTypeProvider
+     */
+    public function testPushWrongType(string $type, array $wrongValues): void
+    {
+        self::expectException(TypeException::class);
+        self::expectExceptionMessage('Variable must be of type ' . $type);
+
+        $sequence = Sequence::of($type);
+        foreach ($wrongValues as $wrongValue) {
+            $sequence->push($wrongValue);
+        }
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testPushMultiple(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+
+        self::assertCount(3, $sequence);
+    }
+
     public function typesDataProvider(): array
     {
         $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
@@ -220,7 +326,7 @@ class SequenceTest extends TestCase
                 'type' => 'int',
                 'value1' => 100,
                 'value2' => 200,
-                'value3' => 100,
+                'value3' => 300,
             ],
             'float' => [
                 'type' => 'float',
