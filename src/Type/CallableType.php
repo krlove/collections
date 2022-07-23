@@ -12,7 +12,7 @@ class CallableType extends AbstractType
             return true;
         }
 
-        return is_callable($value);
+        return is_callable($value, true);
     }
 
     public function __toString()

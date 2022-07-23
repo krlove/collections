@@ -265,6 +265,20 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
+    public function testInsert(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->insert(0, $value1);
+        $sequence->insert(0, $value2);
+        $sequence->insert(2, $value3);
+        self::assertEquals($value2, $sequence->get(0));
+        self::assertEquals($value1, $sequence->get(1));
+        self::assertEquals($value3, $sequence->get(2));
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
     public function testPush(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
@@ -416,6 +430,10 @@ class SequenceTest extends TestCase
                 }
 
                 if ($key === 'object' && $type === Obj2::class) {
+                    continue;
+                }
+
+                if ($key === 'callable' && $type === 'string') {
                     continue;
                 }
 
