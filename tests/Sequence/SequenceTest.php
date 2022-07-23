@@ -288,6 +288,19 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
+    public function testIsEmpty(string $type, $value1): void
+    {
+        $sequence = Sequence::of($type);
+        self::assertTrue($sequence->isEmpty());
+        $sequence->push($value1);
+        self::assertFalse($sequence->isEmpty());
+        $sequence->removeEntry($value1);
+        self::assertTrue($sequence->isEmpty());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
     public function testPush(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
