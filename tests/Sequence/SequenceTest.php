@@ -276,6 +276,15 @@ class SequenceTest extends TestCase
         self::assertEquals($value3, $sequence->get(2));
     }
 
+    public function testInsertOutOfBounds(): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Index 1 is out of bounds');
+
+        $sequence = Sequence::of('string');
+        $sequence->insert(1, 'value');
+    }
+
     /**
      * @dataProvider typesDataProvider
      */
