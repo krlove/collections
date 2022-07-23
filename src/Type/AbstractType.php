@@ -23,6 +23,8 @@ abstract class AbstractType implements TypeInterface
                 $message .= ' or null';
             }
 
+            $message .= sprintf(', %s given', $this->resolveType($value));
+
             throw new TypeException($message);
         }
     }
@@ -30,5 +32,32 @@ abstract class AbstractType implements TypeInterface
     public function isNullable(): bool
     {
         return $this->nullable;
+    }
+
+    private function resolveType($value): string
+    {
+        /** @var TypeInterface[] $types */
+        $types = [
+            new NullType(),
+            new BoolType(),
+            new IntType(),
+            new FloatType(),
+            new StringType(),
+            new IterableType(),
+            new CallableType(),
+            new ResourceType(),
+        ];
+
+        foreach ($types as $type) {
+            if ($type->isTypeOf($value)) {
+                return (string) $type;
+            }
+        }
+
+        if ((new ObjectType())->isTypeOf($value)) {
+            return get_class($value);
+        }
+
+        return gettype($value);
     }
 }

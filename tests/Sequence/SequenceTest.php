@@ -281,15 +281,22 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider valuesOfWrongTypeProvider
      */
-    public function testPushWrongType(string $type, array $wrongValues): void
+    public function testPushWrongType(string $expectedType, string $actualType, $wrongValue): void
     {
         self::expectException(TypeException::class);
-        self::expectExceptionMessage('Variable must be of type ' . $type);
+        self::expectExceptionMessage('Variable must be of type ' . $expectedType . ', ' . $actualType . ' given');
 
-        $sequence = Sequence::of($type);
-        foreach ($wrongValues as $wrongValue) {
-            $sequence->push($wrongValue);
-        }
+        $sequence = Sequence::of($expectedType);
+        $sequence->push($wrongValue);
+    }
+
+    public function testPushWrongNullableType(): void
+    {
+        self::expectException(TypeException::class);
+        self::expectExceptionMessage('Variable must be of type string or null, int given');
+
+        $sequence = Sequence::of('?string');
+        $sequence->push(1);
     }
 
     /**
@@ -399,17 +406,29 @@ class SequenceTest extends TestCase
 
         $data = [];
         foreach ($typeValues as $key => $value) {
-            $wrongValues = [];
             foreach ($typeValues as $type => $wrongValue) {
                 if ($type === $key) {
                     continue;
                 }
-                $wrongValues[] = $wrongValue;
+
+                if ($key === 'object' && $type === 'callable') {
+                    continue;
+                }
+
+                if ($key === 'object' && $type === Obj2::class) {
+                    continue;
+                }
+
+                if ($type === 'object') {
+                    $type = get_class($wrongValue);
+                }
+
+                $data[] = [
+                    'expectedType' => $key,
+                    'actualType' => $type,
+                    'wrongValue' => $wrongValue,
+                ];
             }
-            $data[$key] = [
-                'type' => $key,
-                'wrongValues' => $wrongValues,
-            ];
         }
 
         return $data;
