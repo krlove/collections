@@ -17,9 +17,13 @@ abstract class AbstractType implements TypeInterface
 
     public function assertIsTypeOf($value): void
     {
-        // todo include nullable in exception message
         if (!$this->isTypeOf($value)) {
-            throw new TypeException(sprintf('Variable must be of type %s', $this));
+            $message = sprintf('Variable must be of type %s', $this);
+            if ($this->isNullable()) {
+                $message .= ' or null';
+            }
+
+            throw new TypeException($message);
         }
     }
 
