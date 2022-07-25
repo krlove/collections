@@ -301,6 +301,66 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
+    public function testIsOf(string $type): void
+    {
+        $sequence = Sequence::of($type);
+        self::assertTrue($sequence->isOf($type));
+        self::assertFalse($sequence->isOf('unknown'));
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testLast(string $type, $value1, $value2): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push($value1);
+        $sequence->push($value2);
+        self::assertSame($value2, $sequence->last());
+        $sequence->removeEntry($value2);
+        self::assertSame($value1, $sequence->last());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testLastOutOfBounds(string $type): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Unable to retrieve the last entry - sequence is empty');
+
+        $sequence = Sequence::of($type);
+        $sequence->last();
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testPop(string $type, $value1, $value2): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push($value1);
+        $sequence->push($value2);
+        self::assertSame($value2, $sequence->pop());
+        self::assertSame($value1, $sequence->pop());
+        self::assertTrue($sequence->isEmpty());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testPopOutOfBounds(string $type): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Unable to pop an entry - sequence is empty');
+
+        $sequence = Sequence::of($type);
+        $sequence->pop();
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
     public function testPush(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);
