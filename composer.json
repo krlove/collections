@@ -6,13 +6,15 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Krlove\\": "./tests"
+            "Tests\\Krlove\\": "./tests",
+            "Benchmarks\\Krlove\\": "./benchmarks"
         }
     },
     "require": {
         "php": ">=7.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "symfony/console": "^5.4"
     }
 }
