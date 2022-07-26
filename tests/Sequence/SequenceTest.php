@@ -11,7 +11,6 @@ use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Iterator\DoublyLinkedListIterator;
 use Krlove\Collection\Sequence\Sequence;
-use Krlove\Collection\Set\Set;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\Stub\Obj1;
 use Tests\Krlove\Stub\Obj2;

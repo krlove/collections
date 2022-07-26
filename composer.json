@@ -6,8 +6,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Krlove\\": "./tests",
-            "Benchmarks\\Krlove\\": "./benchmarks"
+            "Tests\\Krlove\\": "./tests"
         }
     },
     "require": {
