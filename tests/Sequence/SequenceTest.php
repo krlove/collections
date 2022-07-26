@@ -476,6 +476,20 @@ class SequenceTest extends TestCase
         self::assertSame($value3, $array[2]);
     }
 
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testUnshift(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->unshift($value1);
+        $sequence->unshift($value2);
+        $sequence->unshift($value3);
+        self::assertSame($value3, $sequence->get(0));
+        self::assertSame($value2, $sequence->get(1));
+        self::assertSame($value1, $sequence->get(2));
+    }
+
     public function typesDataProvider(): array
     {
         $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
