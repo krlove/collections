@@ -45,6 +45,7 @@ class Map implements MapInterface
         return $this->realMap->get($key);
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return $this->realMap->getIterator();

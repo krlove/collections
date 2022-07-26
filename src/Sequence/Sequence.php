@@ -70,6 +70,7 @@ class Sequence implements SequenceInterface
         return $this->list[$index];
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new DoublyLinkedListIterator($this->list);

@@ -95,6 +95,7 @@ class Set implements SetInterface
         return $diffSet;
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->map->keys());
