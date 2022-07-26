@@ -462,6 +462,20 @@ class SequenceTest extends TestCase
         $sequence->shift();
     }
 
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testToArray(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+        $array = $sequence->toArray();
+        self::assertCount(3, $array);
+        self::assertSame($value1, $array[0]);
+        self::assertSame($value2, $array[1]);
+        self::assertSame($value3, $array[2]);
+    }
+
     public function typesDataProvider(): array
     {
         $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
