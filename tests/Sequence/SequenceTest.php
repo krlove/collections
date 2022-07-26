@@ -358,6 +358,25 @@ class SequenceTest extends TestCase
         self::assertSame($value3, $sequence->get(1));
     }
 
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testRemoveEntry(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+        $sequence->push($value1);
+        $sequence->removeEntry($value1);
+        self::assertTrue($sequence->hasEntry($value1));
+        $sequence->removeEntry($value1);
+        $sequence->removeEntry($value2);
+        $sequence->removeEntry($value3);
+        self::assertFalse($sequence->hasEntry($value1));
+        self::assertFalse($sequence->hasEntry($value2));
+        self::assertFalse($sequence->hasEntry($value3));
+        self::assertTrue($sequence->isEmpty());
+    }
+
     public function typesDataProvider(): array
     {
         $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
