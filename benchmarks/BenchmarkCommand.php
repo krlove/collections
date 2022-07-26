@@ -22,6 +22,7 @@ class BenchmarkCommand extends Command
     protected function configure()
     {
         $this
+            ->addOption('iterations', null, InputOption::VALUE_OPTIONAL, 'Number of iterations', 1000)
             ->addOption('output', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Output format', ['cli']);
     }
 
@@ -91,7 +92,7 @@ class BenchmarkCommand extends Command
         foreach ($benchmarks as $benchmark) {
             $memUsageStart = memory_get_usage(true);
             $timeStart = microtime(true);
-            for ($i = 0; $i < 100_000; $i++) {
+            for ($i = 0; $i < (int) $input->getOption('iterations'); $i++) {
                 $benchmark['function']($i);
             }
             $memUsage = memory_get_usage(true) - $memUsageStart;
