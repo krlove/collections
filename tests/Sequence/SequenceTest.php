@@ -437,6 +437,31 @@ class SequenceTest extends TestCase
         self::assertTrue($sequence->isEmpty());
     }
 
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testShift(string $type, $value1, $value2): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push($value1);
+        $sequence->push($value2);
+        self::assertSame($value1, $sequence->shift());
+        self::assertSame($value2, $sequence->shift());
+        self::assertTrue($sequence->isEmpty());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testShiftOutOfBounds(string $type): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Unable to shift an entry - sequence is empty');
+
+        $sequence = Sequence::of($type);
+        $sequence->shift();
+    }
+
     public function typesDataProvider(): array
     {
         $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
