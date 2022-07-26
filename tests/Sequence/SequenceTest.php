@@ -346,6 +346,18 @@ class SequenceTest extends TestCase
         self::assertCount(3, $sequence);
     }
 
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testRemove(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+        $sequence->remove(1);
+        self::assertSame($value1, $sequence->get(0));
+        self::assertSame($value3, $sequence->get(1));
+    }
+
     public function typesDataProvider(): array
     {
         $this->resources[] = $r1 = fopen(__DIR__ . '/../resources/test.txt', 'r');
