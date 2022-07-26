@@ -16,26 +16,31 @@ class ObjectStorageIterator implements Iterator
         $this->storage = $storage;
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->storage->getInfo();
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->storage->next();
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->storage->current();
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->storage->valid();
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->storage->rewind();
