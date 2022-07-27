@@ -47,14 +47,14 @@ abstract class AbstractMap implements MapInterface
         return $this->getKeyType() === $type;
     }
 
-    public function isValueOf(string $type): bool
-    {
-        return $this->getValueType() === $type;
-    }
-
     public function isOf(string $keyType, string $valueType): bool
     {
         return $this->isKeyOf($keyType) && $this->isValueOf($valueType);
+    }
+
+    public function isValueOf(string $type): bool
+    {
+        return $this->getValueType() === $type;
     }
 
     public function hasValue($value): bool
