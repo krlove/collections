@@ -156,4 +156,27 @@ trait TypesProviderTrait
 
         return $data;
     }
+
+    public function keyValueTypesDataProvider(): array
+    {
+        $typesData = $this->typesDataProvider();
+
+        $data = [];
+        foreach ($typesData as $key => $keyData) {
+            foreach ($typesData as $value => $valueData) {
+                $data[$key . '-' . $value] = [
+                    'keyType' => $keyData['type'],
+                    'valueType' => $valueData['type'],
+                    'key1' => $keyData['value1'],
+                    'value1' => $valueData['value1'],
+                    'key2' => $keyData['value2'],
+                    'value2' => $valueData['value2'],
+                    'key3' => $keyData['value3'],
+                    'value3' => $valueData['value3'],
+                ];
+            }
+        }
+
+        return $data;
+    }
 }

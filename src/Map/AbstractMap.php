@@ -16,9 +16,7 @@ abstract class AbstractMap implements MapInterface
 
     public function copy(): self
     {
-        $map = new static();
-        $map->keyType = $this->keyType;
-        $map->valueType = $this->valueType;
+        $map = new static($this->keyType, $this->valueType);
 
         foreach ($this as $key => $value) {
             $map->set($key, $value);

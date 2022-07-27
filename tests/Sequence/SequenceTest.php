@@ -41,8 +41,8 @@ class SequenceTest extends TestCase
     {
         $sequence = Sequence::of($type);
         $sequence->push($value1);
+        self::assertCount(1, $sequence);
         $sequence->clear();
-
         self::assertCount(0, $sequence);
     }
 
