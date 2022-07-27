@@ -6,7 +6,7 @@ namespace Krlove\Collection\Map;
 
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Iterator\MapIterator;
-use Krlove\Collection\Serializer\Hasher;
+use Krlove\Collection\Hasher\Hasher;
 use Krlove\Collection\Type\TypeInterface;
 
 class HashKeyMap extends AbstractMap

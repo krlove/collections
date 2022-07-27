@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Serializer;
+namespace Krlove\Collection\Hasher;
 
 use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Type\ArrayType;
