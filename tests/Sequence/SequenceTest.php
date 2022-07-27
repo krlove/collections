@@ -8,7 +8,7 @@ use Exception;
 use Krlove\Collection\Exception\FrozenException;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Exception\TypeException;
-use Krlove\Collection\Iterator\DoublyLinkedListIterator;
+use Krlove\Collection\Iterator\SequenceIterator;
 use Krlove\Collection\Sequence\Sequence;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\TypesProviderTrait;
@@ -184,7 +184,7 @@ class SequenceTest extends TestCase
         }
 
         $iterator = $sequence->getIterator();
-        self::assertInstanceOf(DoublyLinkedListIterator::class, $iterator);
+        self::assertInstanceOf(SequenceIterator::class, $iterator);
     }
 
     /**

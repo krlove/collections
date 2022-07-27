@@ -4,28 +4,38 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Map;
 
+use ArrayIterator;
 use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Type\FloatType;
+use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Type\TypeInterface;
 
-class FloatKeyMap extends AbstractScalarKeyMap
+class ScalarKeyMap extends AbstractMap
 {
-    public function __construct(TypeInterface $valueType)
-    {
-        parent::__construct($valueType);
+    private array $array = [];
 
-        $this->keyType = new FloatType();
+    public function __construct(TypeInterface $keyType, TypeInterface $valueType)
+    {
+        if (!in_array((string) $keyType, ['int', 'string'])) {
+            throw new TypeException(sprintf('Only int or string types supported as key type for %s, %s given', get_class($this), $keyType));
+        }
+
+        $this->keyType = $keyType;
+        $this->valueType = $valueType;
     }
 
-    public function count(): int
+    #[\ReturnTypeWillChange]
+    public function count()
     {
         return count($this->array);
     }
 
+    public function clear(): void
+    {
+        $this->array = [];
+    }
+
     public function get($key)
     {
-        $key = $this->normalizeKey($key);
-
         if (!$this->has($key)) {
             throw new OutOfBoundsException(sprintf('Key %d does not exist', $key));
         }
@@ -33,27 +43,35 @@ class FloatKeyMap extends AbstractScalarKeyMap
         return $this->array[$key];
     }
 
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->array);
+    }
+
     public function has($key): bool
     {
-        $key = $this->normalizeKey($key);
-
         return array_key_exists($key, $this->array);
     }
 
     public function keyOf($value)
     {
+        if (!$this->valueType->isTypeOf($value)) {
+            return null;
+        }
+
         $key = array_search($value, $this->array, true);
 
         if ($key === false) {
             return null;
         }
 
-        return $this->denormalizeKey($key);
+        return $key;
     }
 
     public function keys(): array
     {
-        return array_keys($this->toArray());
+        return array_keys($this->array);
     }
 
     public function remove($key): bool
@@ -61,8 +79,6 @@ class FloatKeyMap extends AbstractScalarKeyMap
         $this->assertNotFrozen();
 
         if ($this->has($key)) {
-            $key = $this->normalizeKey($key);
-
             unset($this->array[$key]);
 
             return true;
@@ -78,30 +94,21 @@ class FloatKeyMap extends AbstractScalarKeyMap
         $this->keyType->assertIsTypeOf($key);
         $this->valueType->assertIsTypeOf($value);
 
-        $key = $this->normalizeKey($key);
-
         $this->array[$key] = $value;
     }
 
     public function toArray(): array
     {
-        $pairs = [];
-
+        $array = [];
         foreach ($this->array as $key => $value) {
-            $pairs[] = new Pair($this->denormalizeKey($key), $value);
+            $array[] = new Pair($key, $value);
         }
 
-        return $pairs;
+        return $array;
     }
 
-    protected function normalizeKey(float $key): string
+    public function values(): array
     {
-        // todo is this cast needed?
-        return (string) floatval($key);
-    }
-
-    protected function denormalizeKey(string $key): float
-    {
-        return floatval($key);
+        return array_values($this->array);
     }
 }

@@ -6,7 +6,7 @@ namespace Krlove\Collection\Sequence;
 
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Freezable\FreezeTrait;
-use Krlove\Collection\Iterator\DoublyLinkedListIterator;
+use Krlove\Collection\Iterator\SequenceIterator;
 use Krlove\Collection\Type\TypeFactory;
 use Krlove\Collection\Type\TypeInterface;
 use SplDoublyLinkedList;
@@ -73,7 +73,7 @@ class Sequence implements SequenceInterface
     #[\ReturnTypeWillChange]
     public function getIterator()
     {
-        return new DoublyLinkedListIterator($this->list);
+        return new SequenceIterator($this->list);
     }
 
     public function getType(): string
