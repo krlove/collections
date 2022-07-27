@@ -12,7 +12,7 @@ class ResourceType extends AbstractType
             return true;
         }
 
-        return is_resource($value);
+        return is_resource($value) || ($value !== null && !is_scalar($value) && !is_array($value) && !is_object($value));
     }
 
     public function __toString()

@@ -27,6 +27,7 @@ class MapFactory
             default:
                 $class = $keyType;
 
+                // todo can I stick to ObjectType only?
                 return new ClassKeyMap($valueType, $class);
         }
     }
