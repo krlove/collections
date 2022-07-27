@@ -24,12 +24,6 @@ class ScalarKeyMap extends AbstractMap
     }
 
     #[\ReturnTypeWillChange]
-    public function getIterator()
-    {
-        return new ArrayIterator($this->array);
-    }
-
-    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->array);
@@ -47,6 +41,12 @@ class ScalarKeyMap extends AbstractMap
         }
 
         return $this->array[$key];
+    }
+
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->array);
     }
 
     public function has($key): bool

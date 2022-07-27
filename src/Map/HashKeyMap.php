@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Krlove\Collection\Map;
 
 use Krlove\Collection\Exception\OutOfBoundsException;
+use Krlove\Collection\Iterator\MapIterator;
 use Krlove\Collection\Serializer\Hasher;
 use Krlove\Collection\Type\TypeInterface;
 
@@ -17,12 +18,6 @@ class HashKeyMap extends AbstractMap
     {
         $this->keyType = $keyType;
         $this->valueType = $valueType;
-    }
-
-    #[\ReturnTypeWillChange]
-    public function getIterator()
-    {
-        // todo implement
     }
 
     #[\ReturnTypeWillChange]
@@ -46,6 +41,12 @@ class HashKeyMap extends AbstractMap
         $hashedKey = Hasher::hash($key);
 
         return $this->vs[$hashedKey];
+    }
+
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new MapIterator($this->ks, $this->vs);
     }
 
     public function has($key): bool

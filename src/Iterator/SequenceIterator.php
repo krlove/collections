@@ -5,44 +5,44 @@ declare(strict_types=1);
 namespace Krlove\Collection\Iterator;
 
 use Iterator;
-use SplObjectStorage;
+use SplDoublyLinkedList;
 
-class ObjectStorageIterator implements Iterator
+class SequenceIterator implements Iterator
 {
-    private SplObjectStorage $storage;
+    private SplDoublyLinkedList $list;
 
-    public function __construct(SplObjectStorage $storage)
+    public function __construct(SplDoublyLinkedList $list)
     {
-        $this->storage = $storage;
+        $this->list = $list;
     }
 
     #[\ReturnTypeWillChange]
     public function current()
     {
-        return $this->storage->getInfo();
+        return $this->list->current();
     }
 
     #[\ReturnTypeWillChange]
     public function next()
     {
-        $this->storage->next();
+        $this->list->next();
     }
 
     #[\ReturnTypeWillChange]
     public function key()
     {
-        return $this->storage->current();
+        return $this->list->key();
     }
 
     #[\ReturnTypeWillChange]
     public function valid()
     {
-        return $this->storage->valid();
+        return $this->list->valid();
     }
 
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        $this->storage->rewind();
+        $this->list->rewind();
     }
 }

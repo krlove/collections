@@ -5,44 +5,48 @@ declare(strict_types=1);
 namespace Krlove\Collection\Iterator;
 
 use Iterator;
-use SplDoublyLinkedList;
 
-class DoublyLinkedListIterator implements Iterator
+class MapIterator implements Iterator
 {
-    private SplDoublyLinkedList $list;
+    private array $keys;
+    private array $values;
 
-    public function __construct(SplDoublyLinkedList $list)
+    public function __construct(array $keys, array $values)
     {
-        $this->list = $list;
+        $this->keys = $keys;
+        $this->values = $values;
     }
 
     #[\ReturnTypeWillChange]
     public function current()
     {
-        return $this->list->current();
+        return current($this->values);
     }
 
     #[\ReturnTypeWillChange]
     public function next()
     {
-        $this->list->next();
+        next($this->keys);
+
+        return next($this->values);
     }
 
     #[\ReturnTypeWillChange]
     public function key()
     {
-        return $this->list->key();
+        return current($this->keys);
     }
 
     #[\ReturnTypeWillChange]
     public function valid()
     {
-        return $this->list->valid();
+        return key($this->keys) !== null;
     }
 
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        $this->list->rewind();
+        reset($this->keys);
+        reset($this->values);
     }
 }
