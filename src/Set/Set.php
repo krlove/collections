@@ -23,24 +23,7 @@ class Set implements SetInterface
 
     public static function of(string $type): self
     {
-        try {
-            return new self(MapFactory::create($type, 'null'));
-        } catch (TypeException $e) {
-            switch ($e->getCode()) {
-                case TypeException::CODE_NULLABLE_KEY_NOT_ALLOWED:
-                    throw new TypeException(
-                        'Nullable types are not allowed as a Set members type',
-                        $e->getCode()
-                    );
-                case TypeException::CODE_KEY_TYPE_NOT_SUPPORTED:
-                    throw new TypeException(
-                        sprintf('Type %s is not supported as a Set members type', $type),
-                        $e->getCode()
-                    );
-                default:
-                    throw $e;
-            }
-        }
+        return new self(MapFactory::create($type, 'null'));
     }
 
     public function add($member): void

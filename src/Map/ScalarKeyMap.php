@@ -23,11 +23,13 @@ class ScalarKeyMap extends AbstractMap
         $this->valueType = $valueType;
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->array);
@@ -50,14 +52,6 @@ class ScalarKeyMap extends AbstractMap
     public function has($key): bool
     {
         return array_key_exists($key, $this->array);
-    }
-
-    /**
-     * todo move to abstract
-     */
-    public function hasValue($value): bool
-    {
-        return $this->keyOf($value) !== null;
     }
 
     public function keyOf($value)
@@ -103,21 +97,14 @@ class ScalarKeyMap extends AbstractMap
         $this->array[$key] = $value;
     }
 
-    /**
-     * todo move to abstract
-     */
-    public function setMultiple(array $array): void
-    {
-        $this->assertNotFrozen();
-
-        foreach ($array as $key => $value) {
-            $this->set($key, $value);
-        }
-    }
-
     public function toArray(): array
     {
-        return $this->array;
+        $array = [];
+        foreach ($this->array as $key => $value) {
+            $array[] = new Pair($key, $value);
+        }
+
+        return $array;
     }
 
     public function values(): array

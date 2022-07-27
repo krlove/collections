@@ -57,6 +57,11 @@ abstract class AbstractMap implements MapInterface
         return $this->isKeyOf($keyType) && $this->isValueOf($valueType);
     }
 
+    public function hasValue($value): bool
+    {
+        return $this->keyOf($value) !== null;
+    }
+
     public function removeValue($value): bool
     {
         $this->assertNotFrozen();
@@ -68,5 +73,14 @@ abstract class AbstractMap implements MapInterface
         }
 
         return false;
+    }
+
+    public function setMultiple(array $array): void
+    {
+        $this->assertNotFrozen();
+
+        foreach ($array as $key => $value) {
+            $this->set($key, $value);
+        }
     }
 }

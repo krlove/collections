@@ -6,17 +6,26 @@ namespace Krlove\Collection\Map;
 
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Serializer\Hasher;
+use Krlove\Collection\Type\TypeInterface;
 
 class HashKeyMap extends AbstractMap
 {
     private array $ks = [];
     private array $vs = [];
 
+    public function __construct(TypeInterface $keyType, TypeInterface $valueType)
+    {
+        $this->keyType = $keyType;
+        $this->valueType = $valueType;
+    }
+
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         // todo implement
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->vs);
@@ -34,7 +43,9 @@ class HashKeyMap extends AbstractMap
             throw new OutOfBoundsException(sprintf('Key %d does not exist', $key));
         }
 
-        return $this->vs[$key];
+        $hashedKey = Hasher::hash($key);
+
+        return $this->vs[$hashedKey];
     }
 
     public function has($key): bool
@@ -42,14 +53,6 @@ class HashKeyMap extends AbstractMap
         $hashedKey = Hasher::hash($key);
 
         return array_key_exists($hashedKey, $this->ks);
-    }
-
-    /**
-     * todo move to abstract
-     */
-    public function hasValue($value): bool
-    {
-        return $this->keyOf($value) !== null;
     }
 
     public function keyOf($value)
@@ -98,18 +101,6 @@ class HashKeyMap extends AbstractMap
 
         $this->ks[$hashedKey] = $key;
         $this->vs[$hashedKey] = $value;
-    }
-
-    /**
-     * todo move to abstract
-     */
-    public function setMultiple(array $array): void
-    {
-        $this->assertNotFrozen();
-
-        foreach ($array as $key => $value) {
-            $this->set($key, $value);
-        }
     }
 
     public function toArray(): array
