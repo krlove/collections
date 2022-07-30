@@ -1,4 +1,4 @@
-# Collection
+# Collection (Work in progress)
 
 **Strictly typed** data structures for PHP
 
@@ -151,7 +151,7 @@ class MyClass
 
 `clear(): void`
 
-Clears the sequence
+Clears the sequence. Throws `FrozenException` is the sequence is frozen.
 
 `copy(): self`
 
@@ -173,11 +173,73 @@ Returns the entry by index. Throws `OutOfBoundsException` if there is no such in
 
 Returns iterator for given sequence
 
-`getType(): string`
+`getType(): TypeInterface`
 
-Returns type of entries of the sequence. Notice that if the type is nullable, it still will be returned without a question mark prefix
+Returns type of entries of the sequence
 ```php
 $sequence = Sequence::of('?string');
-$type = $sequence->getType(); // 'string'
+$type = $sequence->getType();
+(string) $type; // '?string'
+$type->getType(); // 'string'
+$type->isNullable(); // true
 ```
-To check whether type is nullable, use `Sequence::isNullable`
+
+`has(int $index): bool`
+
+Returns `true` is the sequence contains an entry with given index, `false` otherwise
+
+`hasEntry($entry): bool`
+
+Checks if the sequence contains given entry
+
+`indexOf($entry): ?int`
+
+Returns an index of entry, if it exists in the sequence. If the sequence contains multiple entries `$entry`, then the index of the first one will be returned 
+
+`insert(int $index, $entry): void`
+
+Inserts the entry to a given position (index). All entries after this index will be shifted to the right. Throws `FrozenException` if the sequence is frozen. Throws `TypeException` if the entry is of a wrong type. Throws `OutOfBoundsException` if given index is out of range of existing indices.
+
+`isEmpty(): bool`
+
+Return `true` is the sequence is empty
+
+`isOf(string $type): bool`
+
+Checks if the sequence is of given type
+
+`last(): T`
+
+Returns the last entry in the sequence. Throws `OutOfBoundsException` is the sequence is empty
+
+`pop(): T`
+
+Removes and returns the last entry of the sequence. Throws `FrozenException` if the sequence is frozen. Throws `OutOfBoundsException` if the sequence is empty
+
+`push($entry): void`
+
+Adds the entry to the end of the sequence. Throws `FrozenException` if the sequence is frozen. Throws `TypeException` if the entry is of a wrong type
+
+`pushMultiple(array $entries): void`
+
+Adds multiple entries to the end of the sequence. Throws `FrozenException` if the sequence is frozen. Throws `TypeException` if any of the entries is of a wrong type
+
+`remove(int $index): bool`
+
+Removes an entry at given index. Throws `FrozenException` if the sequence is frozen. Returns `true` if an entry with given index existed and was successfully removed, `false` otherwise
+
+`removeEntry($entry): bool`
+
+Removes the entry from the sequence. If the sequence contains multiple entries `$entry`, the first one will be removed. Throws `FrozenException` if the sequence is frozen. Returns `true` if the entry was found and removed, `false` otherwise
+
+`shift(): T`
+
+Removes and returns the first entry of the sequence. Throws `FrozenException` if the sequence is frozen. Throws `OutOfBoundsException` if the sequence is empty
+
+`toArray(): array`
+
+Returns an array, containing all entries of the sequence
+
+`unshift($entry): void`
+
+Adds the entry to the beginning of the sequence. Moves all existing entries to the right. Throws `FrozenException` if the sequence is frozen. Throws `TypeException` if the entry is of a wrong type

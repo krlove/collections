@@ -194,8 +194,6 @@ class Sequence implements SequenceInterface
     {
         $this->assertNotFrozen();
 
-        $this->type->assertIsTypeOf($entry);
-
         $index = $this->indexOf($entry);
         if ($index !== null) {
             return $this->remove($index);
