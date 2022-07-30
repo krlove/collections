@@ -149,6 +149,7 @@ class SequenceTest extends TestCase
         self::assertCount(8, $thrownExceptions);
         foreach ($thrownExceptions as $exception) {
             self::assertInstanceOf(FrozenException::class, $exception);
+            self::assertEquals('Sequence is frozen and can not be changed', $exception->getMessage());
         }
     }
 

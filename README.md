@@ -105,7 +105,7 @@ After collection is "frozen", it becomes read-only, no changes are allowed to it
 $sequence = Sequence::of('string');
 $sequence->push('Gandalf');
 $sequence->freeze();
-//$sequence->push('Bilbo'); Fatal error: Uncaught Krlove\Collection\Exception\FrozenException: Krlove\Collection\Sequence\Sequence is frozen and can not be changed
+//$sequence->push('Bilbo'); Fatal error: Uncaught Krlove\Collection\Exception\FrozenException: Sequence is frozen and can not be changed
 $copy = $sequence->copy();
 $copy->push('Bilbo');
 

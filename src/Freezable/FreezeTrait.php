@@ -23,7 +23,9 @@ trait FreezeTrait
     protected function assertNotFrozen(): void
     {
         if ($this->isFrozen()) {
-            throw new FrozenException(sprintf('%s is frozen and can not be changed', get_class($this)));
+            $reflectionClass = new \ReflectionClass($this);
+
+            throw new FrozenException(sprintf('%s is frozen and can not be changed', $reflectionClass->getShortName()));
         }
     }
 }
