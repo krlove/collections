@@ -9,6 +9,7 @@ use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
 use Krlove\Collection\Map\MapInterface;
+use Krlove\Collection\Type\TypeInterface;
 
 class Set implements SetInterface
 {
@@ -51,7 +52,7 @@ class Set implements SetInterface
 
     public function copy(): self
     {
-        $set = Set::of($this->getType());
+        $set = Set::of((string) $this->getType());
 
         foreach ($this as $member) {
             $set->add($member);
@@ -67,7 +68,7 @@ class Set implements SetInterface
 
     public function difference(SetInterface $set): ?SetInterface
     {
-        $diffSet = self::of($this->getType());
+        $diffSet = self::of((string) $this->getType());
 
         foreach ($this as $member) {
             if (!$set->has($member)) {
@@ -84,7 +85,7 @@ class Set implements SetInterface
         return new ArrayIterator($this->map->keys());
     }
 
-    public function getType(): string
+    public function getType(): TypeInterface
     {
         return $this->map->getKeyType();
     }
@@ -96,7 +97,7 @@ class Set implements SetInterface
 
     public function hasIntersectionWith(SetInterface $set): bool
     {
-        if ($this->getType() !== $set->getType()) {
+        if ($this->getType()->getType() !== $set->getType()->getType()) {
             return false;
         }
 
@@ -119,9 +120,9 @@ class Set implements SetInterface
 
     public function intersection(SetInterface $set): SetInterface
     {
-        $intersectionSet = self::of($this->getType());
+        $intersectionSet = self::of((string) $this->getType());
 
-        if ($this->getType() !== $set->getType()) {
+        if ($this->getType()->getType() !== $set->getType()->getType()) {
             return $intersectionSet;
         }
 
@@ -154,7 +155,7 @@ class Set implements SetInterface
 
     public function isSubsetOf(SetInterface $set): bool
     {
-        if ($this->getType() !== $set->getType()) {
+        if ($this->getType()->getType() !== $set->getType()->getType()) {
             return false;
         }
 
@@ -185,13 +186,21 @@ class Set implements SetInterface
 
     public function union(SetInterface $set): SetInterface
     {
-        if ($this->getType() !== $set->getType()) {
+        if ($this->getType()->getType() !== $set->getType()->getType()) {
             throw new TypeException(
                 sprintf('Union of sets of types %s and %s is not supported', $this->getType(), $set->getType())
             );
         }
 
-        $unionSet = clone $this;
+        $unionType = $this->getType()->getType();
+        if ($this->getType()->isNullable() || $set->getType()->isNullable()) {
+            $unionType = '?' . $unionType;
+        }
+
+        $unionSet = self::of($unionType);
+        foreach ($this as $member) {
+            $unionSet->add($member);
+        }
         foreach ($set as $member) {
             $unionSet->add($member);
         }

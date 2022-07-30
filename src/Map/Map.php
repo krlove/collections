@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Map;
 
+use Krlove\Collection\Type\TypeInterface;
+
 class Map implements MapInterface
 {
     private MapInterface $realMap;
@@ -51,12 +53,12 @@ class Map implements MapInterface
         return $this->realMap->getIterator();
     }
 
-    public function getKeyType(): string
+    public function getKeyType(): TypeInterface
     {
         return $this->realMap->getKeyType();
     }
 
-    public function getValueType(): string
+    public function getValueType(): TypeInterface
     {
         return $this->realMap->getValueType();
     }

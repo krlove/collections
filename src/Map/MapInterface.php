@@ -7,14 +7,15 @@ namespace Krlove\Collection\Map;
 use Countable;
 use IteratorAggregate;
 use Krlove\Collection\Freezable\FreezableInterface;
+use Krlove\Collection\Type\TypeInterface;
 
 interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
 {
     public function clear(): void;
     public function copy(): self;
     public function get($key);
-    public function getKeyType(): string;
-    public function getValueType(): string;
+    public function getKeyType(): TypeInterface;
+    public function getValueType(): TypeInterface;
     public function has($key): bool;
     public function hasValue($value): bool;
     public function isEmpty(): bool;

@@ -7,6 +7,7 @@ namespace Krlove\Collection\Set;
 use Countable;
 use IteratorAggregate;
 use Krlove\Collection\Freezable\FreezableInterface;
+use Krlove\Collection\Type\TypeInterface;
 
 interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 {
@@ -15,7 +16,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function clear(): void;
     public function copy(): self;
     public function difference(SetInterface $set): ?SetInterface;
-    public function getType(): string;
+    public function getType(): TypeInterface;
     public function has($member): bool;
     public function hasIntersectionWith(SetInterface $set): bool;
     public function intersection(SetInterface $set): SetInterface;

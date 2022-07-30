@@ -25,14 +25,14 @@ abstract class AbstractMap implements MapInterface
         return $map;
     }
 
-    public function getKeyType(): string
+    public function getKeyType(): TypeInterface
     {
-        return (string) $this->keyType;
+        return $this->keyType;
     }
 
-    public function getValueType(): string
+    public function getValueType(): TypeInterface
     {
-        return (string) $this->valueType;
+        return $this->valueType;
     }
 
     public function isEmpty(): bool
@@ -42,7 +42,7 @@ abstract class AbstractMap implements MapInterface
 
     public function isKeyOf(string $type): bool
     {
-        return $this->getKeyType() === $type;
+        return (string) $this->getKeyType() === $type;
     }
 
     public function isOf(string $keyType, string $valueType): bool
@@ -52,7 +52,7 @@ abstract class AbstractMap implements MapInterface
 
     public function isValueOf(string $type): bool
     {
-        return $this->getValueType() === $type;
+        return (string) $this->getValueType() === $type;
     }
 
     public function hasValue($value): bool
