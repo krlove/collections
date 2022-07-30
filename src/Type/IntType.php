@@ -15,7 +15,7 @@ class IntType extends AbstractType
         return is_int($value);
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'int';
     }

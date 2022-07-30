@@ -15,7 +15,7 @@ class ObjectType extends AbstractType
         return is_object($value);
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'object';
     }

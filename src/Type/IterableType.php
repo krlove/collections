@@ -15,7 +15,7 @@ class IterableType extends AbstractType
         return is_iterable($value);
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'iterable';
     }

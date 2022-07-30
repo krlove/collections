@@ -38,7 +38,7 @@ class Sequence implements SequenceInterface
 
     public function copy(): self
     {
-        $sequence = Sequence::of($this->getType());
+        $sequence = Sequence::of((string) $this->getType());
 
         foreach ($this as $entry) {
             $sequence->push($entry);
@@ -76,9 +76,9 @@ class Sequence implements SequenceInterface
         return new SequenceIterator($this->list);
     }
 
-    public function getType(): string
+    public function getType(): TypeInterface
     {
-        return (string) $this->type;
+        return $this->type;
     }
 
     public function has(int $index): bool
@@ -136,7 +136,7 @@ class Sequence implements SequenceInterface
 
     public function isOf(string $type): bool
     {
-        return $type === $this->getType();
+        return $type === (string) $this->getType();
     }
 
     public function last()

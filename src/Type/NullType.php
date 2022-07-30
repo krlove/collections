@@ -11,7 +11,7 @@ class NullType extends AbstractType
         return is_null($value);
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'null';
     }

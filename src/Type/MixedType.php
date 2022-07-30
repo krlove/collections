@@ -11,7 +11,7 @@ class MixedType extends AbstractType
         return true;
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'mixed';
     }

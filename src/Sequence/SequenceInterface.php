@@ -7,6 +7,7 @@ namespace Krlove\Collection\Sequence;
 use Countable;
 use IteratorAggregate;
 use Krlove\Collection\Freezable\FreezableInterface;
+use Krlove\Collection\Type\TypeInterface;
 
 interface SequenceInterface extends Countable, FreezableInterface, IteratorAggregate
 {
@@ -14,7 +15,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function copy(): self;
     public function first();
     public function get(int $index);
-    public function getType(): string;
+    public function getType(): TypeInterface;
     public function has(int $index): bool;
     public function hasEntry($entry): bool;
     public function indexOf($entry): ?int;

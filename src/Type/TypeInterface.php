@@ -6,8 +6,9 @@ namespace Krlove\Collection\Type;
 
 interface TypeInterface
 {
-    public function isTypeOf($value): bool;
+    public function getType(): string;
     public function isNullable(): bool;
+    public function isTypeOf($value): bool;
     public function assertIsTypeOf($value): void;
     public function __toString();
 }

@@ -23,7 +23,7 @@ class SequenceTest extends TestCase
     public function testOf(string $type): void
     {
         $sequence = Sequence::of($type);
-        self::assertEquals($type, $sequence->getType());
+        self::assertEquals($type, (string) $sequence->getType());
     }
 
     public function testOfWrongType(): void
@@ -193,7 +193,7 @@ class SequenceTest extends TestCase
     public function testGetType(string $type): void
     {
         $sequence = Sequence::of($type);
-        self::assertEquals($type, $sequence->getType());
+        self::assertEquals($type, (string) $sequence->getType());
     }
 
     /**

@@ -15,7 +15,7 @@ class ArrayType extends AbstractType
         return is_array($value);
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'array';
     }

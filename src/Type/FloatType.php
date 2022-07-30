@@ -15,7 +15,7 @@ class FloatType extends AbstractType
         return is_float($value);
     }
 
-    public function __toString()
+    public function getType(): string
     {
         return 'float';
     }
