@@ -205,4 +205,66 @@ class MapTest extends TestCase
         $map->remove($key1);
         self::assertFalse($map->hasValue($value1));
     }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testIsEmpty(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertTrue($map->isEmpty());
+        $map->set($key1, $value1);
+        self::assertFalse($map->isEmpty());
+        $map->remove($key1);
+        self::assertTrue($map->isEmpty());
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testIsKeyOf(string $keyType, string $valueType): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertTrue($map->isKeyOf($keyType));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testIsValueOf(string $keyType, string $valueType): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertTrue($map->isValueOf($valueType));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testIsOf(string $keyType, string $valueType): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertTrue($map->isOf($keyType, $valueType));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testKeyOf(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        self::assertEquals($key1, $map->keyOf($value1));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testKeyOfWrongValue(string $keyType, string $valueType, $key1, $value1): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Value not found in the Map');
+
+        $map = Map::of($keyType, $valueType);
+        $map->keyOf($value1);
+    }
 }
