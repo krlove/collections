@@ -184,8 +184,7 @@ class SequenceTest extends TestCase
             $i++;
         }
 
-        $iterator = $sequence->getIterator();
-        self::assertInstanceOf(SequenceIterator::class, $iterator);
+        self::assertInstanceOf(SequenceIterator::class, $sequence->getIterator());
     }
 
     /**
@@ -241,6 +240,18 @@ class SequenceTest extends TestCase
         self::assertEquals(0, $sequence->indexOf($value1));
         $sequence->remove(0);
         self::assertEquals(0, $sequence->indexOf($value2));
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testIndexOfWrongEntry(string $type, $value1): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Entry not found in the Sequence');
+
+        $sequence = Sequence::of($type);
+        $sequence->indexOf($value1);
     }
 
     /**
@@ -416,6 +427,15 @@ class SequenceTest extends TestCase
         self::assertFalse($sequence->hasEntry($value2));
         self::assertFalse($sequence->hasEntry($value3));
         self::assertTrue($sequence->isEmpty());
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testRemoveEntryNotInSequence(string $type, $value1): void
+    {
+        $sequence = Sequence::of($type);
+        self::assertFalse($sequence->removeEntry($value1));
     }
 
     /**

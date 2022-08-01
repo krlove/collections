@@ -39,7 +39,7 @@ class ScalarKeyMap extends AbstractMap
     public function get($key)
     {
         if (!$this->has($key)) {
-            throw new OutOfBoundsException(sprintf('Key %d does not exist', $key));
+            throw new OutOfBoundsException(sprintf('Key %s does not exist', $key));
         }
 
         return $this->array[$key];
@@ -59,13 +59,13 @@ class ScalarKeyMap extends AbstractMap
     public function keyOf($value)
     {
         if (!$this->valueType->isTypeOf($value)) {
-            return null;
+            throw new OutOfBoundsException('Value not found in the Map');
         }
 
         $key = array_search($value, $this->array, true);
 
         if ($key === false) {
-            return null;
+            throw new OutOfBoundsException('Value not found in the Map');
         }
 
         return $key;

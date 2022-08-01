@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Krlove\Map;
 
+use ArrayIterator;
 use Exception;
 use Krlove\Collection\Exception\FrozenException;
+use Krlove\Collection\Exception\OutOfBoundsException;
+use Krlove\Collection\Iterator\MapIterator;
 use Krlove\Collection\Map\Map;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\TypesProviderTrait;
@@ -117,5 +120,89 @@ class MapTest extends TestCase
             self::assertInstanceOf(FrozenException::class, $exception);
             self::assertEquals('Map is frozen and can not be changed', $exception->getMessage());
         }
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testGet(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        self::assertEquals($value1, $map->get($key1));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testGetWrongKey(string $keyType, string $valueType, $key1): void
+    {
+        self::expectException(OutOfBoundsException::class);
+
+        $map = Map::of($keyType, $valueType);
+        $map->get($key1);
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testGetIterator(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        foreach ($map as $key => $value) {
+            self::assertEquals($key1, $key);
+            self::assertEquals($value1, $value);
+        }
+
+        if ($keyType === 'int' || $keyType === 'string') {
+            self::assertInstanceOf(ArrayIterator::class, $map->getIterator());
+        } else {
+            self::assertInstanceOf(MapIterator::class, $map->getIterator());
+        }
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testGetKeyType(string $keyType, string $valueType): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertEquals($keyType, $map->getKeyType());
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testGetValueType(string $keyType, string $valueType): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertEquals($valueType, $map->getValueType());
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testHas(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertFalse($map->has($key1));
+        $map->set($key1, $value1);
+        self::assertTrue($map->has($key1));
+        $map->remove($key1);
+        self::assertFalse($map->has($key1));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testHasValue(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        self::assertFalse($map->hasValue($value1));
+        $map->set($key1, $value1);
+        self::assertTrue($map->hasValue($value1));
+        $map->remove($key1);
+        self::assertFalse($map->hasValue($value1));
     }
 }

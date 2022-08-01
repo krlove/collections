@@ -18,7 +18,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function getType(): TypeInterface;
     public function has(int $index): bool;
     public function hasEntry($entry): bool;
-    public function indexOf($entry): ?int;
+    public function indexOf($entry): int;
     public function insert(int $index, $entry): void;
     public function isEmpty(): bool;
     public function isOf(string $type): bool;

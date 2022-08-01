@@ -37,7 +37,7 @@ class HashKeyMap extends AbstractMap
     public function get($key)
     {
         if (!$this->has($key)) {
-            throw new OutOfBoundsException(sprintf('Key %d does not exist', $key));
+            throw new OutOfBoundsException(sprintf('Key (of type %s) does not exist', gettype($key)));
         }
 
         $hashedKey = Hasher::hash($key);
@@ -61,13 +61,13 @@ class HashKeyMap extends AbstractMap
     public function keyOf($value)
     {
         if (!$this->valueType->isTypeOf($value)) {
-            return null;
+            throw new OutOfBoundsException('Value not found in the Map');
         }
 
         $hashedKey = array_search($value, $this->vs, true);
 
         if ($hashedKey === false) {
-            return null;
+            throw new OutOfBoundsException('Value not found in the Map');
         }
 
         return $this->ks[$hashedKey];

@@ -192,9 +192,9 @@ Returns `true` is the sequence contains an entry with given index, `false` other
 
 Checks if the sequence contains given entry
 
-**indexOf($entry): ?int**
+**indexOf($entry): int**
 
-Returns an index of entry, if it exists in the sequence. If the sequence contains multiple entries `$entry`, then the index of the first one will be returned 
+Returns an index of entry, if it exists in the sequence. If the sequence contains multiple entries `$entry`, then the index of the first one will be returned. Throws `OutOfBoundsException` if the entry is not present in the sequence
 
 **insert(int $index, $entry): void**
 

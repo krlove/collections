@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Map;
 
+use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Type\TypeInterface;
 
@@ -57,7 +58,13 @@ abstract class AbstractMap implements MapInterface
 
     public function hasValue($value): bool
     {
-        return $this->keyOf($value) !== null;
+        try {
+            $this->keyOf($value);
+        } catch (OutOfBoundsException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     public function removeValue($value): bool

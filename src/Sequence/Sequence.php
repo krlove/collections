@@ -101,10 +101,10 @@ class Sequence implements SequenceInterface
         return false;
     }
 
-    public function indexOf($entry): ?int
+    public function indexOf($entry): int
     {
         if (!$this->type->isTypeOf($entry)) {
-            return null;
+            throw new OutOfBoundsException('Entry not found in the Sequence');
         }
 
         foreach ($this->list as $index => $item) {
@@ -113,7 +113,7 @@ class Sequence implements SequenceInterface
             }
         }
 
-        return null;
+        throw new OutOfBoundsException('Entry not found in the Sequence');
     }
 
     public function insert(int $index, $entry): void
@@ -194,12 +194,13 @@ class Sequence implements SequenceInterface
     {
         $this->assertNotFrozen();
 
-        $index = $this->indexOf($entry);
-        if ($index !== null) {
-            return $this->remove($index);
+        try {
+            $index = $this->indexOf($entry);
+        } catch (OutOfBoundsException $e) {
+            return false;
         }
 
-        return false;
+        return $this->remove($index);
     }
 
     public function shift()
