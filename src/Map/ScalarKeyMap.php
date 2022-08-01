@@ -31,6 +31,8 @@ class ScalarKeyMap extends AbstractMap
 
     public function clear(): void
     {
+        $this->assertNotFrozen();
+
         $this->array = [];
     }
 

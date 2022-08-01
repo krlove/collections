@@ -28,6 +28,8 @@ class HashKeyMap extends AbstractMap
 
     public function clear(): void
     {
+        $this->assertNotFrozen();
+
         $this->ks = [];
         $this->vs = [];
     }

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Krlove\Collection\Map;
 
+use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Type\TypeInterface;
 
 class Map implements MapInterface
 {
+    use FreezeTrait;
+
     private MapInterface $realMap;
 
     private function __construct(MapInterface $realMap)
@@ -22,6 +25,8 @@ class Map implements MapInterface
 
     public function clear(): void
     {
+        $this->assertNotFrozen();
+
         $this->realMap->clear();
     }
 
@@ -35,11 +40,6 @@ class Map implements MapInterface
     public function count(): int
     {
         return $this->realMap->count();
-    }
-
-    public function freeze(): void
-    {
-        $this->realMap->freeze();
     }
 
     public function get($key)
@@ -78,11 +78,6 @@ class Map implements MapInterface
         return $this->realMap->isEmpty();
     }
 
-    public function isFrozen(): bool
-    {
-        return $this->realMap->isFrozen();
-    }
-
     public function isKeyOf(string $type): bool
     {
         return $this->realMap->isKeyOf($type);
@@ -110,21 +105,29 @@ class Map implements MapInterface
 
     public function remove($key): bool
     {
+        $this->assertNotFrozen();
+
         return $this->realMap->remove($key);
     }
 
     public function removeValue($value): bool
     {
+        $this->assertNotFrozen();
+
         return $this->realMap->removeValue($value);
     }
 
     public function set($key, $value): void
     {
+        $this->assertNotFrozen();
+
         $this->realMap->set($key, $value);
     }
 
     public function setMultiple(array $array): void
     {
+        $this->assertNotFrozen();
+
         $this->realMap->setMultiple($array);
     }
 
