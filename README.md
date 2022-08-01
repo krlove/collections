@@ -169,7 +169,7 @@ Returns the first entry in the sequence. Throws `OutOfBoundsException` if the se
 
 Returns the entry by index. Throws `OutOfBoundsException` if there is no such index
 
-**getIterator(): \Trawersable**
+**getIterator(): Traversable**
 
 Returns iterator for given sequence
 
