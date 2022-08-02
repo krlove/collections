@@ -10,6 +10,7 @@ use Krlove\Collection\Exception\FrozenException;
 use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Iterator\MapIterator;
 use Krlove\Collection\Map\Map;
+use Krlove\Collection\Map\Pair;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\TypesProviderTrait;
 
@@ -109,13 +110,8 @@ class MapTest extends TestCase
         } catch (Exception $e) {
             $thrownExceptions[] = $e;
         }
-        try {
-            $map->setMultiple([]);
-        } catch (Exception $e) {
-            $thrownExceptions[] = $e;
-        }
 
-        self::assertCount(5, $thrownExceptions);
+        self::assertCount(4, $thrownExceptions);
         foreach ($thrownExceptions as $exception) {
             self::assertInstanceOf(FrozenException::class, $exception);
             self::assertEquals('Map is frozen and can not be changed', $exception->getMessage());
@@ -266,5 +262,116 @@ class MapTest extends TestCase
 
         $map = Map::of($keyType, $valueType);
         $map->keyOf($value1);
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testKeys(string $keyType, string $valueType, $key1, $value1, $key2, $value2): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        $map->set($key2, $value2);
+
+        $keys = $map->keys();
+        if ($keyType === 'null') {
+            self::assertCount(1, $keys);
+            self::assertContains($key1, $keys);
+
+            return;
+        }
+
+        self::assertCount(2, $keys);
+        self::assertContains($key1, $keys);
+        self::assertContains($key2, $keys);
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testRemove(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        self::assertTrue($map->has($key1));
+        self::assertTrue($map->hasValue($value1));
+        self::assertTrue($map->remove($key1));
+        self::assertFalse($map->remove($key1));
+        self::assertFalse($map->has($key1));
+        self::assertFalse($map->hasValue($value1));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testRemoveValue(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        self::assertTrue($map->has($key1));
+        self::assertTrue($map->hasValue($value1));
+        self::assertTrue($map->removeValue($value1));
+        self::assertFalse($map->removeValue($value1));
+        self::assertFalse($map->has($key1));
+        self::assertFalse($map->hasValue($value1));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testSet(string $keyType, string $valueType, $key1, $value1, $key2, $value2): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        $map->set($key2, $value2);
+
+        if ($keyType === 'null') {
+            self::assertCount(1, $map);
+            self::assertEquals($value2, $map->get($key1));
+            self::assertEquals($value2, $map->get($key2));
+
+            return;
+        }
+
+        self::assertCount(2, $map);
+        self::assertEquals($value1, $map->get($key1));
+        self::assertEquals($value2, $map->get($key2));
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testToArray(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        $pairs = $map->toArray();
+        foreach ($pairs as $pair) {
+            self::assertInstanceOf(Pair::class, $pair);
+            self::assertEquals($key1, $pair->getKey());
+            self::assertEquals($value1, $pair->getValue());
+        }
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testValues(string $keyType, string $valueType, $key1, $value1, $key2, $value2): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        $map->set($key2, $value2);
+
+        $values = $map->values();
+        if ($keyType === 'null') {
+            self::assertCount(1, $values);
+            self::assertContains($value2, $values);
+
+            return;
+        }
+
+        self::assertCount(2, $values);
+        self::assertContains($value1, $values);
+        self::assertContains($value2, $values);
     }
 }

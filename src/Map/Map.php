@@ -124,13 +124,6 @@ class Map implements MapInterface
         $this->realMap->set($key, $value);
     }
 
-    public function setMultiple(array $array): void
-    {
-        $this->assertNotFrozen();
-
-        $this->realMap->setMultiple($array);
-    }
-
     public function toArray(): array
     {
         return $this->realMap->toArray();

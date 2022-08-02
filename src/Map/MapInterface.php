@@ -27,7 +27,6 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
     public function remove($key): bool;
     public function removeValue($value): bool;
     public function set($key, $value): void;
-    public function setMultiple(array $array): void;
     public function toArray(): array;
     public function values(): array;
 }

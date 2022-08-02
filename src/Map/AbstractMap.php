@@ -71,21 +71,12 @@ abstract class AbstractMap implements MapInterface
     {
         $this->assertNotFrozen();
 
-        $key = $this->keyOf($value);
-
-        if ($key !== null) {
-            return $this->remove($key);
+        try {
+            $key = $this->keyOf($value);
+        } catch (OutOfBoundsException $e) {
+            return false;
         }
 
-        return false;
-    }
-
-    public function setMultiple(array $array): void
-    {
-        $this->assertNotFrozen();
-
-        foreach ($array as $key => $value) {
-            $this->set($key, $value);
-        }
+        return $this->remove($key);
     }
 }
