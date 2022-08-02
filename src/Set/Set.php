@@ -70,7 +70,9 @@ class Set implements SetInterface
 
     public function difference(SetInterface $set): ?SetInterface
     {
-        $diffSet = self::of((string) $this->getType());
+        $this->assertSameTypeWith($set, 'difference');
+
+        $diffSet = self::of($this->getCommonTypeWith($set));
 
         foreach ($this as $member) {
             if (!$set->has($member)) {
@@ -99,9 +101,7 @@ class Set implements SetInterface
 
     public function hasIntersectionWith(SetInterface $set): bool
     {
-        if ($this->getType()->getType() !== $set->getType()->getType()) {
-            return false;
-        }
+        $this->assertSameTypeWith($set, __METHOD__);
 
         if ($this->count() < $set->count()) {
             $iterated = $this;
@@ -122,11 +122,9 @@ class Set implements SetInterface
 
     public function intersection(SetInterface $set): SetInterface
     {
-        $intersectionSet = self::of((string) $this->getType());
+        $this->assertSameTypeWith($set, __METHOD__);
 
-        if ($this->getType()->getType() !== $set->getType()->getType()) {
-            return $intersectionSet;
-        }
+        $intersectionSet = self::of($this->getCommonTypeWith($set));
 
         if ($this->count() < $set->count()) {
             $iterated = $this;
@@ -157,9 +155,7 @@ class Set implements SetInterface
 
     public function isSubsetOf(SetInterface $set): bool
     {
-        if ($this->getType()->getType() !== $set->getType()->getType()) {
-            return false;
-        }
+        $this->assertSameTypeWith($set, __METHOD__);
 
         if ($this->count() > $set->count()) {
             return false;
@@ -201,18 +197,10 @@ class Set implements SetInterface
 
     public function union(SetInterface $set): SetInterface
     {
-        if ($this->getType()->getType() !== $set->getType()->getType()) {
-            throw new TypeException(
-                sprintf('Union of sets of types %s and %s is not supported', $this->getType(), $set->getType())
-            );
-        }
+        $this->assertSameTypeWith($set, __METHOD__);
 
-        $unionType = $this->getType()->getType();
-        if ($this->getType()->isNullable() || $set->getType()->isNullable()) {
-            $unionType = '?' . $unionType;
-        }
+        $unionSet = self::of($this->getCommonTypeWith($set));
 
-        $unionSet = self::of($unionType);
         foreach ($this as $member) {
             $unionSet->add($member);
         }
@@ -221,5 +209,29 @@ class Set implements SetInterface
         }
 
         return $unionSet;
+    }
+
+    private function assertSameTypeWith(SetInterface $set, string $operation): void
+    {
+        if ($this->getType()->getType() !== $set->getType()->getType()) {
+            throw new TypeException(
+                sprintf(
+                    'To perform %s operation, sets must be of the same types, %s and %s given',
+                    $operation,
+                    $this->getType(),
+                    $set->getType()
+                )
+            );
+        }
+    }
+
+    private function getCommonTypeWith(SetInterface $set): string
+    {
+        $type = $this->getType()->getType();
+        if ($this->getType()->isNullable() || $set->getType()->isNullable()) {
+            $type = '?' . $type;
+        }
+
+        return $type;
     }
 }
