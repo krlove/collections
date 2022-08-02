@@ -15,7 +15,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function addMultiple($members): void;
     public function clear(): void;
     public function copy(): self;
-    public function difference(SetInterface $set): ?SetInterface;
+    public function difference(SetInterface $set): SetInterface;
     public function getType(): TypeInterface;
     public function has($member): bool;
     public function hasIntersectionWith(SetInterface $set): bool;

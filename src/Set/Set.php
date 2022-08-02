@@ -68,7 +68,7 @@ class Set implements SetInterface
         return $this->map->count();
     }
 
-    public function difference(SetInterface $set): ?SetInterface
+    public function difference(SetInterface $set): SetInterface
     {
         $this->assertSameTypeWith($set, 'difference');
 
@@ -211,6 +211,9 @@ class Set implements SetInterface
         return $unionSet;
     }
 
+    /**
+     * todo: Types must be compared more thoroughly
+     */
     private function assertSameTypeWith(SetInterface $set, string $operation): void
     {
         if ($this->getType()->getType() !== $set->getType()->getType()) {
