@@ -23,6 +23,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function isEmpty(): bool;
     public function isOf(string $type): bool;
     public function isSubsetOf(SetInterface $set): bool;
+    public function pop();
     public function remove($member): bool;
     public function toArray(): array;
     public function union(SetInterface $set): SetInterface;

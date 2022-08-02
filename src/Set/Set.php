@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Krlove\Collection\Set;
 
 use ArrayIterator;
+use Krlove\Collection\Exception\OutOfBoundsException;
 use Krlove\Collection\Exception\TypeException;
 use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
@@ -61,6 +62,7 @@ class Set implements SetInterface
         return $set;
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->map->count();
@@ -170,6 +172,19 @@ class Set implements SetInterface
         }
 
         return true;
+    }
+
+    public function pop()
+    {
+        $this->assertNotFrozen();
+
+        try {
+            $pair = $this->map->pop();
+
+            return $pair->getKey();
+        } catch (OutOfBoundsException $e) {
+            throw new OutOfBoundsException('Can not pop from an empty Set');
+        }
     }
 
     public function remove($member): bool

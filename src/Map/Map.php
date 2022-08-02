@@ -103,6 +103,13 @@ class Map implements MapInterface
         return $this->realMap->keys();
     }
 
+    public function pop(): Pair
+    {
+        $this->assertNotFrozen();
+
+        return $this->realMap->pop();
+    }
+
     public function remove($key): bool
     {
         $this->assertNotFrozen();

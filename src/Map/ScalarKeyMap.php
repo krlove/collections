@@ -76,6 +76,20 @@ class ScalarKeyMap extends AbstractMap
         return array_keys($this->array);
     }
 
+    public function pop(): Pair
+    {
+        $this->assertNotFrozen();
+
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('Can not pop from an empty Map');
+        }
+
+        $key = array_rand($this->array);
+        $value = $this->array[$key];
+
+        return new Pair($key, $value);
+    }
+
     public function remove($key): bool
     {
         $this->assertNotFrozen();

@@ -78,6 +78,21 @@ class HashKeyMap extends AbstractMap
         return array_values($this->ks);
     }
 
+    public function pop(): Pair
+    {
+        $this->assertNotFrozen();
+
+        if ($this->isEmpty()) {
+            throw new OutOfBoundsException('Can not pop from an empty Map');
+        }
+
+        $hashedKey = array_rand($this->ks);
+        $key = $this->ks[$hashedKey];
+        $value = $this->vs[$hashedKey];
+
+        return new Pair($key, $value);
+    }
+
     public function remove($key): bool
     {
         $this->assertNotFrozen();

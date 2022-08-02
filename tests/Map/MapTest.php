@@ -96,6 +96,11 @@ class MapTest extends TestCase
             $thrownExceptions[] = $e;
         }
         try {
+            $map->pop();
+        } catch (Exception $e) {
+            $thrownExceptions[] = $e;
+        }
+        try {
             $map->remove($key1);
         } catch (Exception $e) {
             $thrownExceptions[] = $e;
@@ -111,7 +116,7 @@ class MapTest extends TestCase
             $thrownExceptions[] = $e;
         }
 
-        self::assertCount(4, $thrownExceptions);
+        self::assertCount(5, $thrownExceptions);
         foreach ($thrownExceptions as $exception) {
             self::assertInstanceOf(FrozenException::class, $exception);
             self::assertEquals('Map is frozen and can not be changed', $exception->getMessage());
@@ -284,6 +289,31 @@ class MapTest extends TestCase
         self::assertCount(2, $keys);
         self::assertContains($key1, $keys);
         self::assertContains($key2, $keys);
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testPop(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+        $pair = $map->pop();
+        self::assertInstanceOf(Pair::class, $pair);
+        self::assertEquals($key1, $pair->getKey());
+        self::assertEquals($value1, $pair->getValue());
+    }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testPopEmptySet(string $keyType, string $valueType): void
+    {
+        self::expectException(OutOfBoundsException::class);
+        self::expectExceptionMessage('Can not pop from an empty Map');
+
+        $map = Map::of($keyType, $valueType);
+        $map->pop();
     }
 
     /**

@@ -24,6 +24,7 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
     public function isOf(string $keyType, string $valueType): bool;
     public function keyOf($value);
     public function keys(): array;
+    public function pop(): Pair;
     public function remove($key): bool;
     public function removeValue($value): bool;
     public function set($key, $value): void;
