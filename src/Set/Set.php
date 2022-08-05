@@ -70,7 +70,7 @@ class Set implements SetInterface
 
     public function difference(SetInterface $set): SetInterface
     {
-        $this->assertSameTypeWith($set, 'difference');
+        $this->assertSameTypeWith($set, __METHOD__);
 
         $diffSet = self::of($this->getCommonTypeWith($set));
 
