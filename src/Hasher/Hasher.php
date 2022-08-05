@@ -28,18 +28,19 @@ class Hasher
     private static function inferType($value): string
     {
         /** @var TypeInterface[] $types */
-        $types = [
-            new NullType(),
-            new BoolType(),
-            new IntType(),
-            new FloatType(),
-            new StringType(),
-            new ArrayType(),
-            new ResourceType(),
-            new ObjectType(),
+        $typeClasses = [
+            NullType::class,
+            BoolType::class,
+            IntType::class,
+            FloatType::class,
+            StringType::class,
+            ArrayType::class,
+            ResourceType::class,
+            ObjectType::class,
         ];
 
-        foreach ($types as $type) {
+        foreach ($typeClasses as $typeClass) {
+            $type = new $typeClass();
             if ($type->isTypeOf($value)) {
                 return (string) $type;
             }
