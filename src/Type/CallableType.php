@@ -15,7 +15,7 @@ class CallableType extends AbstractType
         return is_callable($value, true);
     }
 
-    public function getType(): string
+    public function getName(): string
     {
         return 'callable';
     }

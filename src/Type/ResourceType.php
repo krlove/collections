@@ -15,7 +15,7 @@ class ResourceType extends AbstractType
         return is_resource($value) || ($value !== null && !is_scalar($value) && !is_array($value) && !is_object($value));
     }
 
-    public function getType(): string
+    public function getName(): string
     {
         return 'resource';
     }

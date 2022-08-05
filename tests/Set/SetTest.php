@@ -118,7 +118,7 @@ class SetTest extends TestCase
     public function testDifferenceWrongTypes(): void
     {
         self::expectException(TypeException::class);
-        self::expectExceptionMessage('To perform difference operation, sets must be of the same types, string and int given');
+        self::expectExceptionMessage('Unable to perform operation: types string and int are not compatible');
 
         $set1 = Set::of('string');
         $set2 = Set::of('int');

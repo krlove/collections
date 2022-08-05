@@ -26,7 +26,7 @@ class ClassType extends AbstractType
         return $value instanceof $this->class;
     }
 
-    public function getType(): string
+    public function getName(): string
     {
         return $this->class;
     }

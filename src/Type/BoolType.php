@@ -15,7 +15,7 @@ class BoolType extends AbstractType
         return is_bool($value);
     }
 
-    public function getType(): string
+    public function getName(): string
     {
         return 'bool';
     }

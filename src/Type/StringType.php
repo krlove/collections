@@ -15,7 +15,7 @@ class StringType extends AbstractType
         return is_string($value);
     }
 
-    public function getType(): string
+    public function getName(): string
     {
         return 'string';
     }

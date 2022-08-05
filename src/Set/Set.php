@@ -11,6 +11,7 @@ use Krlove\Collection\Freezable\FreezeTrait;
 use Krlove\Collection\Map\MapFactory;
 use Krlove\Collection\Map\MapInterface;
 use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collection\Type\TypeIntersection;
 
 class Set implements SetInterface
 {
@@ -70,8 +71,6 @@ class Set implements SetInterface
 
     public function difference(SetInterface $set): SetInterface
     {
-        $this->assertSameTypeWith($set, __METHOD__);
-
         $diffSet = self::of($this->getCommonTypeWith($set));
 
         foreach ($this as $member) {
@@ -101,7 +100,7 @@ class Set implements SetInterface
 
     public function hasIntersectionWith(SetInterface $set): bool
     {
-        $this->assertSameTypeWith($set, __METHOD__);
+        $this->getCommonTypeWith($set);
 
         if ($this->count() < $set->count()) {
             $iterated = $this;
@@ -122,8 +121,6 @@ class Set implements SetInterface
 
     public function intersection(SetInterface $set): SetInterface
     {
-        $this->assertSameTypeWith($set, __METHOD__);
-
         $intersectionSet = self::of($this->getCommonTypeWith($set));
 
         if ($this->count() < $set->count()) {
@@ -155,7 +152,7 @@ class Set implements SetInterface
 
     public function isSubsetOf(SetInterface $set): bool
     {
-        $this->assertSameTypeWith($set, __METHOD__);
+        $this->getCommonTypeWith($set);
 
         if ($this->count() > $set->count()) {
             return false;
@@ -197,8 +194,6 @@ class Set implements SetInterface
 
     public function union(SetInterface $set): SetInterface
     {
-        $this->assertSameTypeWith($set, __METHOD__);
-
         $unionSet = self::of($this->getCommonTypeWith($set));
 
         foreach ($this as $member) {
@@ -211,28 +206,18 @@ class Set implements SetInterface
         return $unionSet;
     }
 
-    /**
-     * todo: Types must be compared more thoroughly
-     */
-    private function assertSameTypeWith(SetInterface $set, string $operation): void
+    private function getCommonTypeWith(SetInterface $set): string
     {
-        if ($this->getType()->getType() !== $set->getType()->getType()) {
+        $type = TypeIntersection::between($this->getType(), $set->getType());
+
+        if ($type === null) {
             throw new TypeException(
                 sprintf(
-                    'To perform %s operation, sets must be of the same types, %s and %s given',
-                    $operation,
+                    'Unable to perform operation: types %s and %s are not compatible',
                     $this->getType(),
                     $set->getType()
                 )
             );
-        }
-    }
-
-    private function getCommonTypeWith(SetInterface $set): string
-    {
-        $type = $this->getType()->getType();
-        if ($this->getType()->isNullable() || $set->getType()->isNullable()) {
-            $type = '?' . $type;
         }
 
         return $type;
