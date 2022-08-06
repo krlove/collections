@@ -1,4 +1,4 @@
-# Collection (Work in progress)
+# Collections (Work in progress)
 
 **Strictly typed** data structures for PHP
 
