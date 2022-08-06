@@ -9,6 +9,7 @@ use Krlove\Collection\Type\TypeIntersection;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\Type\Stub\ChildClass;
 use Tests\Krlove\Type\Stub\ChildInterface;
+use Tests\Krlove\Type\Stub\ClassImplInterface;
 use Tests\Krlove\Type\Stub\ParentClass;
 use Tests\Krlove\Type\Stub\ParentInterface;
 
@@ -62,6 +63,21 @@ class TypeIntersectionTest extends TestCase
                 'type1' => ChildInterface::class,
                 'type2' => ParentInterface::class,
                 'intersectionType' => ParentInterface::class,
+            ],
+            [
+                'type1' => ClassImplInterface::class,
+                'type2' => ChildInterface::class,
+                'intersectionType' => ChildInterface::class,
+            ],
+            [
+                'type1' => ClassImplInterface::class,
+                'type2' => ParentInterface::class,
+                'intersectionType' => ParentInterface::class,
+            ],
+            [
+                'type1' => ChildInterface::class,
+                'type2' => ChildClass::class,
+                'intersectionType' => null,
             ],
             [
                 'type1' => 'array',
