@@ -5,7 +5,7 @@
 ## Installation
 
 ```
-composer require krlove/collection
+composer require krlove/collections
 ```
 
 ## Sequence
