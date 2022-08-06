@@ -26,6 +26,14 @@ class TypeIntersection
             return $isAnyNullable ? '?object' : 'object';
         }
 
+        if ($type1->getName() === 'null') {
+            return '?' . $type2->getName();
+        }
+
+        if ($type2->getName() === 'null') {
+            return '?' . $type1->getName();
+        }
+
         if ($type1 instanceof ClassType && $type2 instanceof ClassType) {
             $class1 = $type1->getName();
             $class2 = $type2->getName();

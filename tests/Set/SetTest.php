@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Set;
+namespace Tests\Krlove\Set;
 
 use ArrayIterator;
 use Exception;
