@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Map;
+namespace Krlove\Collections\Map;
 
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Freezable\FreezeTrait;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Freezable\FreezeTrait;
+use Krlove\Collections\Type\TypeInterface;
 
 abstract class AbstractMap implements MapInterface
 {

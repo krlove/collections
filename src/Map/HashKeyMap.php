@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Map;
+namespace Krlove\Collections\Map;
 
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Iterator\MapIterator;
-use Krlove\Collection\Hasher\Hasher;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Iterator\MapIterator;
+use Krlove\Collections\Hasher\Hasher;
+use Krlove\Collections\Type\TypeInterface;
 
 class HashKeyMap extends AbstractMap
 {

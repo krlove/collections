@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Map;
+namespace Krlove\Collections\Map;
 
 use ArrayIterator;
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Exception\TypeException;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Exception\TypeException;
+use Krlove\Collections\Type\TypeInterface;
 
 class ScalarKeyMap extends AbstractMap
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Map;
+namespace Krlove\Collections\Map;
 
-use Krlove\Collection\Freezable\FreezeTrait;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Freezable\FreezeTrait;
+use Krlove\Collections\Type\TypeInterface;
 
 class Map implements MapInterface
 {

@@ -6,10 +6,10 @@ namespace Tests\Krlove\Set;
 
 use ArrayIterator;
 use Exception;
-use Krlove\Collection\Exception\FrozenException;
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Exception\TypeException;
-use Krlove\Collection\Set\Set;
+use Krlove\Collections\Exception\FrozenException;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Exception\TypeException;
+use Krlove\Collections\Set\Set;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\TypesProviderTrait;
 

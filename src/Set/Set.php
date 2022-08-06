@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Set;
+namespace Krlove\Collections\Set;
 
 use ArrayIterator;
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Exception\TypeException;
-use Krlove\Collection\Freezable\FreezeTrait;
-use Krlove\Collection\Map\MapFactory;
-use Krlove\Collection\Map\MapInterface;
-use Krlove\Collection\Type\TypeInterface;
-use Krlove\Collection\Type\TypeIntersection;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Exception\TypeException;
+use Krlove\Collections\Freezable\FreezeTrait;
+use Krlove\Collections\Map\MapFactory;
+use Krlove\Collections\Map\MapInterface;
+use Krlove\Collections\Type\TypeInterface;
+use Krlove\Collections\Type\TypeIntersection;
 
 class Set implements SetInterface
 {

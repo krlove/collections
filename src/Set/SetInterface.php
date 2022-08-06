@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Set;
+namespace Krlove\Collections\Set;
 
 use Countable;
 use IteratorAggregate;
-use Krlove\Collection\Freezable\FreezableInterface;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Freezable\FreezableInterface;
+use Krlove\Collections\Type\TypeInterface;
 
 interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 {

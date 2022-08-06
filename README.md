@@ -2,13 +2,13 @@
 
 **Strictly typed** data structures for PHP
 
-### Installation
+## Installation
 
 ```
 composer require krlove/collection
 ```
 
-### Sequence
+## Sequence
 Sequence is an ordered collection of variables of any type
 ```php
 $sequence = Sequence::of('string');
@@ -26,7 +26,7 @@ foreach ($sequence as $index => $value) {
 1: Frodo
 ```
 
-### Map
+## Map
 Map contains key-value pairs, where each key is unique
 ```php
 $map = Map::of('string', 'array');
@@ -51,7 +51,7 @@ berries: array (
 )
 ```
 
-### Set
+## Set
 Set is a collection of unique variables of any type
 ```php
 $set = Set::of('string');
@@ -68,7 +68,7 @@ array (
 )
 ```
 
-### Types
+## Types
 All collections are strictly typed
 ```php
 $sequence = Sequence::of('int');
@@ -92,14 +92,14 @@ Supported types are
 - class (objects of specific class or interface)
 - mixed (any type is allowed)
 
-### Nullable
+## Nullable
 Types can be nullable
 ```php
 $sequence = Sequence::of('?string');
 $sequence->push(null);
 ```
 
-### Freezable
+## Freezable
 After collection is "frozen", it becomes read-only, no changes are allowed to it. It is impossible to "unfreeze" the collection once it is frozen, but it is possible to **copy** it
 ```php
 $sequence = Sequence::of('string');
@@ -118,7 +118,7 @@ foreach ($copy as $index => $value) {
 1: Bilbo
 ```
 
-### Usage
+## Usage
 Unfortunately, PHP does not support generic types, so it is impossible to define a property as follows
 ```php
 private Map<int, string> $map; // invalid
@@ -145,7 +145,7 @@ class MyClass
 }
 ```
 
-### API Reference
+## API Reference
 
 ### Sequence
 
@@ -243,3 +243,11 @@ Returns an array, containing all entries of the sequence
 **unshift($entry): void**
 
 Adds the entry to the beginning of the sequence. Moves all existing entries to the right. Throws `FrozenException` if the sequence is frozen. Throws `TypeException` if the entry is of a wrong type
+
+### Map
+
+**clear(): void**
+
+Clears the map. Throws `FrozenException` is the map is frozen.
+
+

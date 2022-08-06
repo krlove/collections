@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Freezable;
+namespace Krlove\Collections\Freezable;
 
 interface FreezableInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Iterator;
+namespace Krlove\Collections\Iterator;
 
 use Iterator;
 use SplDoublyLinkedList;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Exception;
+namespace Krlove\Collections\Exception;
 
 class FrozenException extends CollectionException
 {

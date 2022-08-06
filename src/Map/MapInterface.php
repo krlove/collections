@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Map;
+namespace Krlove\Collections\Map;
 
 use Countable;
 use IteratorAggregate;
-use Krlove\Collection\Freezable\FreezableInterface;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Freezable\FreezableInterface;
+use Krlove\Collections\Type\TypeInterface;
 
 interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
 {

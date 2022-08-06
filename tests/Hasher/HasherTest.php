@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Krlove\Hasher;
 
-use Krlove\Collection\Hasher\Hasher;
+use Krlove\Collections\Hasher\Hasher;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\Stub\Obj1;
 use Tests\Krlove\Stub\Obj2;

@@ -6,11 +6,11 @@ namespace Tests\Krlove\Map;
 
 use ArrayIterator;
 use Exception;
-use Krlove\Collection\Exception\FrozenException;
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Iterator\MapIterator;
-use Krlove\Collection\Map\Map;
-use Krlove\Collection\Map\Pair;
+use Krlove\Collections\Exception\FrozenException;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Iterator\MapIterator;
+use Krlove\Collections\Map\Map;
+use Krlove\Collections\Map\Pair;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\TypesProviderTrait;
 

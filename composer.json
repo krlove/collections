@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "Krlove\\Collection\\": "./src"
+            "Krlove\\Collections\\": "./src"
         }
     },
     "autoload-dev": {

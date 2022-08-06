@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Krlove\Sequence;
 
 use Exception;
-use Krlove\Collection\Exception\FrozenException;
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Exception\TypeException;
-use Krlove\Collection\Iterator\SequenceIterator;
-use Krlove\Collection\Sequence\Sequence;
+use Krlove\Collections\Exception\FrozenException;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Exception\TypeException;
+use Krlove\Collections\Iterator\SequenceIterator;
+use Krlove\Collections\Sequence\Sequence;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\TypesProviderTrait;
 

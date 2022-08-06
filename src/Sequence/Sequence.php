@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Sequence;
+namespace Krlove\Collections\Sequence;
 
-use Krlove\Collection\Exception\OutOfBoundsException;
-use Krlove\Collection\Freezable\FreezeTrait;
-use Krlove\Collection\Iterator\SequenceIterator;
-use Krlove\Collection\Type\TypeFactory;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Exception\OutOfBoundsException;
+use Krlove\Collections\Freezable\FreezeTrait;
+use Krlove\Collections\Iterator\SequenceIterator;
+use Krlove\Collections\Type\TypeFactory;
+use Krlove\Collections\Type\TypeInterface;
 use SplDoublyLinkedList;
 
 class Sequence implements SequenceInterface

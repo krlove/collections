@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Type;
+namespace Krlove\Collections\Type;
 
 class ResourceType extends AbstractType
 {

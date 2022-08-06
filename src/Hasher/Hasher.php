@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Hasher;
+namespace Krlove\Collections\Hasher;
 
-use Krlove\Collection\Exception\TypeException;
-use Krlove\Collection\Type\ArrayType;
-use Krlove\Collection\Type\BoolType;
-use Krlove\Collection\Type\FloatType;
-use Krlove\Collection\Type\IntType;
-use Krlove\Collection\Type\NullType;
-use Krlove\Collection\Type\ObjectType;
-use Krlove\Collection\Type\ResourceType;
-use Krlove\Collection\Type\StringType;
-use Krlove\Collection\Type\TypeInterface;
+use Krlove\Collections\Exception\TypeException;
+use Krlove\Collections\Type\ArrayType;
+use Krlove\Collections\Type\BoolType;
+use Krlove\Collections\Type\FloatType;
+use Krlove\Collections\Type\IntType;
+use Krlove\Collections\Type\NullType;
+use Krlove\Collections\Type\ObjectType;
+use Krlove\Collections\Type\ResourceType;
+use Krlove\Collections\Type\StringType;
+use Krlove\Collections\Type\TypeInterface;
 
 class Hasher
 {

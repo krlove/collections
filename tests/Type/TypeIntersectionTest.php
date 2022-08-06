@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Krlove\Type;
 
-use Krlove\Collection\Type\TypeFactory;
-use Krlove\Collection\Type\TypeIntersection;
+use Krlove\Collections\Type\TypeFactory;
+use Krlove\Collections\Type\TypeIntersection;
 use PHPUnit\Framework\TestCase;
 use Tests\Krlove\Type\Stub\ChildClass;
 use Tests\Krlove\Type\Stub\ChildInterface;

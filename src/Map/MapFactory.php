@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Map;
+namespace Krlove\Collections\Map;
 
-use Krlove\Collection\Type\TypeFactory;
+use Krlove\Collections\Type\TypeFactory;
 
 class MapFactory
 {

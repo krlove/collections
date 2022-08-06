@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Freezable;
+namespace Krlove\Collections\Freezable;
 
-use Krlove\Collection\Exception\FrozenException;
+use Krlove\Collections\Exception\FrozenException;
 
 trait FreezeTrait
 {

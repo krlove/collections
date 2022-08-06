@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Krlove\Collection\Type;
+namespace Krlove\Collections\Type;
 
-use Krlove\Collection\Exception\TypeException;
+use Krlove\Collections\Exception\TypeException;
 
 abstract class AbstractType implements TypeInterface
 {
