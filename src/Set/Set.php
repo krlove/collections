@@ -52,6 +52,11 @@ class Set implements SetInterface
         $this->map->clear();
     }
 
+    public function contains($member): bool
+    {
+        return $this->map->has($member);
+    }
+
     public function copy(): self
     {
         $set = Set::of((string) $this->getType());
@@ -74,7 +79,7 @@ class Set implements SetInterface
         $diffSet = self::of($this->getCommonTypeWith($set));
 
         foreach ($this as $member) {
-            if (!$set->has($member)) {
+            if (!$set->contains($member)) {
                 $diffSet->add($member);
             }
         }
@@ -93,11 +98,6 @@ class Set implements SetInterface
         return $this->map->getKeyType();
     }
 
-    public function has($member): bool
-    {
-        return $this->map->has($member);
-    }
-
     public function hasIntersectionWith(SetInterface $set): bool
     {
         $this->getCommonTypeWith($set);
@@ -111,7 +111,7 @@ class Set implements SetInterface
         }
 
         foreach ($iterated as $member) {
-            if ($lookedUp->has($member)) {
+            if ($lookedUp->contains($member)) {
                 return true;
             }
         }
@@ -132,7 +132,7 @@ class Set implements SetInterface
         }
 
         foreach ($iterated as $member) {
-            if ($lookedUp->has($member)) {
+            if ($lookedUp->contains($member)) {
                 $intersectionSet->add($member);
             }
         }
@@ -159,7 +159,7 @@ class Set implements SetInterface
         }
 
         foreach ($this as $member) {
-            if (!$set->has($member)) {
+            if (!$set->contains($member)) {
                 return false;
             }
         }

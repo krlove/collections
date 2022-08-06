@@ -86,6 +86,7 @@ class ScalarKeyMap extends AbstractMap
 
         $key = array_rand($this->array);
         $value = $this->array[$key];
+        unset($this->array[$key]);
 
         return new Pair($key, $value);
     }

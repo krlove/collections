@@ -89,6 +89,8 @@ class HashKeyMap extends AbstractMap
         $hashedKey = array_rand($this->ks);
         $key = $this->ks[$hashedKey];
         $value = $this->vs[$hashedKey];
+        unset($this->ks[$hashedKey]);
+        unset($this->vs[$hashedKey]);
 
         return new Pair($key, $value);
     }

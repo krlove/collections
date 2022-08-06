@@ -302,17 +302,15 @@ class MapTest extends TestCase
         self::assertInstanceOf(Pair::class, $pair);
         self::assertEquals($key1, $pair->getKey());
         self::assertEquals($value1, $pair->getValue());
+        self::assertTrue($map->isEmpty());
     }
 
-    /**
-     * @dataProvider keyValueTypesDataProvider
-     */
-    public function testPopEmptySet(string $keyType, string $valueType): void
+    public function testPopEmptySet(): void
     {
         self::expectException(OutOfBoundsException::class);
         self::expectExceptionMessage('Can not pop from an empty Map');
 
-        $map = Map::of($keyType, $valueType);
+        $map = Map::of('int', 'string');
         $map->pop();
     }
 
