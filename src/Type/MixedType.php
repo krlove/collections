@@ -11,7 +11,17 @@ class MixedType extends AbstractType
         return true;
     }
 
+    public function isNullable(): bool
+    {
+        return true;
+    }
+
     public function getName(): string
+    {
+        return 'mixed';
+    }
+
+    public function __toString()
     {
         return 'mixed';
     }

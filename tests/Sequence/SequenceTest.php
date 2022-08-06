@@ -381,7 +381,7 @@ class SequenceTest extends TestCase
     public function testPushWrongNullableType(): void
     {
         self::expectException(TypeException::class);
-        self::expectExceptionMessage('Variable must be of type string or null, int given');
+        self::expectExceptionMessage('Variable must be of type ?string, int given');
 
         $sequence = Sequence::of('?string');
         $sequence->push(1);
