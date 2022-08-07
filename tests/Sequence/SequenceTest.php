@@ -26,6 +26,23 @@ class SequenceTest extends TestCase
         self::assertEquals($type, (string) $sequence->getType());
     }
 
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testOfNullable(string $type): void
+    {
+        $sequence = Sequence::of($type);
+        if ($type === '?null') {
+            $expectedType = 'null';
+        } elseif ($type === '?mixed') {
+            $expectedType = 'mixed';
+        } else {
+            $expectedType = $type;
+        }
+
+        self::assertEquals($expectedType, (string) $sequence->getType());
+    }
+
     public function testOfWrongType(): void
     {
         self::expectException(TypeException::class);
@@ -58,6 +75,17 @@ class SequenceTest extends TestCase
         self::assertNotSame($sequence, $copy);
         self::assertCount(1, $copy);
         self::assertSame($value1, $copy->first());
+    }
+
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testCopyNullable(string $type): void
+    {
+        $sequence = Sequence::of($type);
+
+        $copy = $sequence->copy();
+        self::assertTrue($copy->getType()->isNullable());
     }
 
     /**
@@ -364,6 +392,18 @@ class SequenceTest extends TestCase
         self::assertEquals($value1, $sequence->get(0));
         self::assertEquals($value2, $sequence->get(1));
         self::assertEquals($value3, $sequence->get(2));
+    }
+
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testPushNullable(string $type): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->push(null);
+
+        self::assertCount(1, $sequence);
+        self::assertNull($sequence->pop());
     }
 
     /**

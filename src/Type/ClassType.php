@@ -23,6 +23,10 @@ class ClassType extends AbstractType
 
     public function isTypeOf($value): bool
     {
+        if ($this->isNullable() && is_null($value)) {
+            return true;
+        }
+
         return $value instanceof $this->class;
     }
 

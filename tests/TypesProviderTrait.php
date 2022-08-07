@@ -105,6 +105,20 @@ trait TypesProviderTrait
         ];
     }
 
+    public function nullableTypesDataProvider(): array
+    {
+        $typesData = $this->typesDataProvider();
+        $nullableTypesData = [];
+
+        foreach ($typesData as $key => $value) {
+            $type = '?' . $key;
+            $value['type'] = $type;
+            $nullableTypesData[$type] = $value;
+        }
+
+        return $nullableTypesData;
+    }
+
     public function valuesOfWrongTypeProvider(): array
     {
         $r = fopen(__DIR__ . '/resources/test.txt', 'r');
