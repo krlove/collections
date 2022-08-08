@@ -13,7 +13,7 @@ class MapFactory
         $keyType = TypeFactory::create($keyType);
         $valueType = TypeFactory::create($valueType);
 
-        return in_array($keyType, ['int', 'string']) && !$keyType->isNullable()
+        return \in_array($keyType, ['int', 'string']) && !$keyType->isNullable()
             ? new ScalarKeyMap($keyType, $valueType)
             : new HashKeyMap($keyType, $valueType);
     }

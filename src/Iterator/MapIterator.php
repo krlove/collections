@@ -20,33 +20,33 @@ class MapIterator implements Iterator
     #[\ReturnTypeWillChange]
     public function current()
     {
-        return current($this->values);
+        return \current($this->values);
     }
 
     #[\ReturnTypeWillChange]
     public function next()
     {
-        next($this->keys);
+        \next($this->keys);
 
-        return next($this->values);
+        return \next($this->values);
     }
 
     #[\ReturnTypeWillChange]
     public function key()
     {
-        return current($this->keys);
+        return \current($this->keys);
     }
 
     #[\ReturnTypeWillChange]
     public function valid()
     {
-        return key($this->keys) !== null;
+        return \key($this->keys) !== null;
     }
 
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        reset($this->keys);
-        reset($this->values);
+        \reset($this->keys);
+        \reset($this->values);
     }
 }

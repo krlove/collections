@@ -64,7 +64,7 @@ class Sequence implements SequenceInterface
     public function get(int $index)
     {
         if (!$this->has($index)) {
-            throw new OutOfBoundsException(sprintf('Index %d is out of bounds', $index));
+            throw new OutOfBoundsException(\sprintf('Index %d is out of bounds', $index));
         }
 
         return $this->list[$index];
@@ -123,7 +123,7 @@ class Sequence implements SequenceInterface
         $this->type->assertIsTypeOf($entry);
 
         if ($index < 0 || $index > $this->count()) {
-            throw new OutOfBoundsException(sprintf('Index %d is out of bounds', $index));
+            throw new OutOfBoundsException(\sprintf('Index %d is out of bounds', $index));
         }
 
         $this->list->add($index, $entry);
@@ -216,7 +216,7 @@ class Sequence implements SequenceInterface
 
     public function toArray(): array
     {
-        return iterator_to_array($this->getIterator());
+        return \iterator_to_array($this->getIterator());
     }
 
     public function unshift($entry): void

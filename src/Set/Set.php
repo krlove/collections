@@ -212,7 +212,7 @@ class Set implements SetInterface
 
         if ($type === null) {
             throw new TypeException(
-                sprintf(
+                \sprintf(
                     'Unable to perform operation: types %s and %s are not compatible',
                     $this->getType(),
                     $set->getType()

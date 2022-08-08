@@ -8,7 +8,7 @@ class NullType extends AbstractType
 {
     public function isTypeOf($value): bool
     {
-        return is_null($value);
+        return \is_null($value);
     }
 
     public function isNullable(): bool

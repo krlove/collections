@@ -14,8 +14,8 @@ class ClassType extends AbstractType
     {
         parent::__construct($nullable);
 
-        if (!class_exists($class) && !interface_exists($class)) {
-            throw new TypeException(sprintf('Class or interface %s does not exist', $class));
+        if (!\class_exists($class) && !\interface_exists($class)) {
+            throw new TypeException(\sprintf('Class or interface %s does not exist', $class));
         }
 
         $this->class = $class;
@@ -23,7 +23,7 @@ class ClassType extends AbstractType
 
     public function isTypeOf($value): bool
     {
-        if ($this->isNullable() && is_null($value)) {
+        if ($this->isNullable() && \is_null($value)) {
             return true;
         }
 

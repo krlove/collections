@@ -10,7 +10,7 @@ class TypeFactory
     {
         if ($type[0] === '?') {
             $isNullable = true;
-            $type = substr($type, 1);
+            $type = \substr($type, 1);
         } else {
             $isNullable = false;
         }

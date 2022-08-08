@@ -20,7 +20,7 @@ class Hasher
     public static function hash($value): string
     {
         $type = self::inferType($value);
-        $hashingMethod = 'hash' . ucfirst($type);
+        $hashingMethod = 'hash' . \ucfirst($type);
 
         return self::$hashingMethod($value);
     }
@@ -46,7 +46,7 @@ class Hasher
             }
         }
 
-        throw new TypeException(sprintf('Hashing of type %s is not supported', gettype($value)));
+        throw new TypeException(sprintf('Hashing of type %s is not supported', \gettype($value)));
     }
 
     private static function hashNull(): string
@@ -66,23 +66,23 @@ class Hasher
 
     private static function hashFloat(float $value): string
     {
-        return 'f' . floatval($value);
+        return 'f' . $value;
     }
 
     private static function hashString(string $value): string
     {
-        return 's' . md5($value);
+        return 's' . \md5($value);
     }
 
     private static function hashArray(array $value): string
     {
-        ksort($value);
+        \ksort($value);
         $hashArray = [];
         foreach ($value as $key => $item) {
             $hashArray[$key] = self::hash($item);
         }
 
-        return 'a' . md5(serialize($hashArray));
+        return 'a' . \md5(\serialize($hashArray));
     }
 
     private static function hashResource($value): string

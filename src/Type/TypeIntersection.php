@@ -17,12 +17,12 @@ class TypeIntersection
         }
 
         $typeNames = [$type1->getName(), $type2->getName()];
-        if (in_array('mixed', $typeNames)) {
+        if (\in_array('mixed', $typeNames)) {
             return 'mixed';
         }
 
         $isAnyNullable = $type1->isNullable() || $type2->isNullable();
-        if (in_array('object', $typeNames) && in_array('class', $typeNames)) {
+        if (\in_array('object', $typeNames) && \in_array('class', $typeNames)) {
             return $isAnyNullable ? '?object' : 'object';
         }
 
@@ -38,9 +38,9 @@ class TypeIntersection
             $class1 = $type1->getName();
             $class2 = $type2->getName();
 
-            if (is_subclass_of($class1, $class2)) {
+            if (\is_subclass_of($class1, $class2)) {
                 $commonClass = $class2;
-            } elseif (is_subclass_of($class2, $class1)) {
+            } elseif (\is_subclass_of($class2, $class1)) {
                 $commonClass = $class1;
             }
 
@@ -49,7 +49,7 @@ class TypeIntersection
             }
         }
 
-        if (in_array('array', $typeNames) && in_array('iterable', $typeNames)) {
+        if (\in_array('array', $typeNames) && \in_array('iterable', $typeNames)) {
             return $isAnyNullable ? '?iterable' : 'iterable';
         }
 

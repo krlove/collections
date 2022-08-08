@@ -15,8 +15,8 @@ class ScalarKeyMap extends AbstractMap
 
     public function __construct(TypeInterface $keyType, TypeInterface $valueType)
     {
-        if (!in_array((string) $keyType, ['int', 'string'])) {
-            throw new TypeException(sprintf('Only int or string types supported as key type for %s, %s given', get_class($this), $keyType));
+        if (!\in_array((string) $keyType, ['int', 'string'])) {
+            throw new TypeException(\sprintf('Only int or string types supported as key type for %s, %s given', \get_class($this), $keyType));
         }
 
         $this->keyType = $keyType;
@@ -26,7 +26,7 @@ class ScalarKeyMap extends AbstractMap
     #[\ReturnTypeWillChange]
     public function count()
     {
-        return count($this->array);
+        return \count($this->array);
     }
 
     public function clear(): void
@@ -39,7 +39,7 @@ class ScalarKeyMap extends AbstractMap
     public function get($key)
     {
         if (!$this->has($key)) {
-            throw new OutOfBoundsException(sprintf('Key %s does not exist', $key));
+            throw new OutOfBoundsException(\sprintf('Key %s does not exist', $key));
         }
 
         return $this->array[$key];
@@ -53,7 +53,7 @@ class ScalarKeyMap extends AbstractMap
 
     public function has($key): bool
     {
-        return array_key_exists($key, $this->array);
+        return \array_key_exists($key, $this->array);
     }
 
     public function keyOf($value)
@@ -62,7 +62,7 @@ class ScalarKeyMap extends AbstractMap
             throw new OutOfBoundsException('Value not found in the Map');
         }
 
-        $key = array_search($value, $this->array, true);
+        $key = \array_search($value, $this->array, true);
 
         if ($key === false) {
             throw new OutOfBoundsException('Value not found in the Map');
@@ -73,7 +73,7 @@ class ScalarKeyMap extends AbstractMap
 
     public function keys(): array
     {
-        return array_keys($this->array);
+        return \array_keys($this->array);
     }
 
     public function pop(): Pair
@@ -84,7 +84,7 @@ class ScalarKeyMap extends AbstractMap
             throw new OutOfBoundsException('Can not pop from an empty Map');
         }
 
-        $key = array_rand($this->array);
+        $key = \array_rand($this->array);
         $value = $this->array[$key];
         unset($this->array[$key]);
 
@@ -126,6 +126,6 @@ class ScalarKeyMap extends AbstractMap
 
     public function values(): array
     {
-        return array_values($this->array);
+        return \array_values($this->array);
     }
 }
