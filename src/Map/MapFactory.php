@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Krlove\Collections\Map;
 
 use Krlove\Collections\Type\TypeFactory;
+use function in_array;
 
 class MapFactory
 {
@@ -13,7 +14,7 @@ class MapFactory
         $keyType = TypeFactory::create($keyType);
         $valueType = TypeFactory::create($valueType);
 
-        return \in_array($keyType, ['int', 'string']) && !$keyType->isNullable()
+        return in_array($keyType, ['int', 'string']) && !$keyType->isNullable()
             ? new ScalarKeyMap($keyType, $valueType)
             : new HashKeyMap($keyType, $valueType);
     }

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Krlove\Collections\Type;
 
 use Krlove\Collections\Exception\TypeException;
+use function class_exists;
+use function interface_exists;
+use function is_null;
+use function sprintf;
 
 class ClassType extends AbstractType
 {
@@ -14,8 +18,8 @@ class ClassType extends AbstractType
     {
         parent::__construct($nullable);
 
-        if (!\class_exists($class) && !\interface_exists($class)) {
-            throw new TypeException(\sprintf('Class or interface %s does not exist', $class));
+        if (!class_exists($class) && !interface_exists($class)) {
+            throw new TypeException(sprintf('Class or interface %s does not exist', $class));
         }
 
         $this->class = $class;
@@ -23,7 +27,7 @@ class ClassType extends AbstractType
 
     public function isTypeOf($value): bool
     {
-        if ($this->isNullable() && \is_null($value)) {
+        if ($this->isNullable() && is_null($value)) {
             return true;
         }
 

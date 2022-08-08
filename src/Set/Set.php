@@ -12,6 +12,7 @@ use Krlove\Collections\Map\MapFactory;
 use Krlove\Collections\Map\MapInterface;
 use Krlove\Collections\Type\TypeInterface;
 use Krlove\Collections\Type\TypeIntersection;
+use function sprintf;
 
 class Set implements SetInterface
 {
@@ -59,7 +60,7 @@ class Set implements SetInterface
 
     public function copy(): self
     {
-        $set = Set::of((string) $this->getType());
+        $set = Set::of((string)$this->getType());
 
         foreach ($this as $member) {
             $set->add($member);
@@ -212,7 +213,7 @@ class Set implements SetInterface
 
         if ($type === null) {
             throw new TypeException(
-                \sprintf(
+                sprintf(
                     'Unable to perform operation: types %s and %s are not compatible',
                     $this->getType(),
                     $set->getType()

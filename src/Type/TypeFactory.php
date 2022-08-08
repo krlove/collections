@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Krlove\Collections\Type;
 
+use function substr;
+
 class TypeFactory
 {
     public static function create(string $type): TypeInterface
     {
         if ($type[0] === '?') {
             $isNullable = true;
-            $type = \substr($type, 1);
+            $type = substr($type, 1);
         } else {
             $isNullable = false;
         }
-        
+
         switch ($type) {
             case 'mixed':
                 return new MixedType($isNullable);

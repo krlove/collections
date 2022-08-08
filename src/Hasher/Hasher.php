@@ -14,13 +14,19 @@ use Krlove\Collections\Type\ObjectType;
 use Krlove\Collections\Type\ResourceType;
 use Krlove\Collections\Type\StringType;
 use Krlove\Collections\Type\TypeInterface;
+use function gettype;
+use function ksort;
+use function md5;
+use function serialize;
+use function spl_object_hash;
+use function ucfirst;
 
 class Hasher
 {
     public static function hash($value): string
     {
         $type = self::inferType($value);
-        $hashingMethod = 'hash' . \ucfirst($type);
+        $hashingMethod = 'hash' . ucfirst($type);
 
         return self::$hashingMethod($value);
     }
@@ -42,11 +48,11 @@ class Hasher
         foreach ($typeClasses as $typeClass) {
             $type = new $typeClass();
             if ($type->isTypeOf($value)) {
-                return (string) $type;
+                return (string)$type;
             }
         }
 
-        throw new TypeException(sprintf('Hashing of type %s is not supported', \gettype($value)));
+        throw new TypeException(sprintf('Hashing of type %s is not supported', gettype($value)));
     }
 
     private static function hashNull(): string
@@ -71,18 +77,18 @@ class Hasher
 
     private static function hashString(string $value): string
     {
-        return 's' . \md5($value);
+        return 's' . md5($value);
     }
 
     private static function hashArray(array $value): string
     {
-        \ksort($value);
+        ksort($value);
         $hashArray = [];
         foreach ($value as $key => $item) {
             $hashArray[$key] = self::hash($item);
         }
 
-        return 'a' . \md5(\serialize($hashArray));
+        return 'a' . md5(serialize($hashArray));
     }
 
     private static function hashResource($value): string
@@ -92,6 +98,6 @@ class Hasher
 
     private static function hashObject(object $value): string
     {
-        return 'o' . \spl_object_hash($value);
+        return 'o' . spl_object_hash($value);
     }
 }

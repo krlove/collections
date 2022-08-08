@@ -43,7 +43,7 @@ abstract class AbstractMap implements MapInterface
 
     public function isKeyOf(string $type): bool
     {
-        return (string) $this->getKeyType() === $type;
+        return (string)$this->getKeyType() === $type;
     }
 
     public function isOf(string $keyType, string $valueType): bool
@@ -53,7 +53,7 @@ abstract class AbstractMap implements MapInterface
 
     public function isValueOf(string $type): bool
     {
-        return (string) $this->getValueType() === $type;
+        return (string)$this->getValueType() === $type;
     }
 
     public function hasValue($value): bool

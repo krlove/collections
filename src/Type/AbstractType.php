@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Krlove\Collections\Type;
 
 use Krlove\Collections\Exception\TypeException;
+use function get_class;
+use function gettype;
+use function sprintf;
 
 abstract class AbstractType implements TypeInterface
 {
@@ -18,7 +21,7 @@ abstract class AbstractType implements TypeInterface
     public function assertIsTypeOf($value): void
     {
         if (!$this->isTypeOf($value)) {
-            throw new TypeException(\sprintf('Variable must be of type %s, %s given', $this, $this->resolveType($value)));
+            throw new TypeException(sprintf('Variable must be of type %s, %s given', $this, $this->resolveType($value)));
         }
     }
 
@@ -50,14 +53,14 @@ abstract class AbstractType implements TypeInterface
 
         foreach ($types as $type) {
             if ($type->isTypeOf($value)) {
-                return (string) $type;
+                return (string)$type;
             }
         }
 
         if ((new ObjectType())->isTypeOf($value)) {
-            return \get_class($value);
+            return get_class($value);
         }
 
-        return \gettype($value);
+        return gettype($value);
     }
 }
