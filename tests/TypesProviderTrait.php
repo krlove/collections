@@ -105,20 +105,6 @@ trait TypesProviderTrait
         ];
     }
 
-    public function nullableTypesDataProvider(): array
-    {
-        $typesData = $this->typesDataProvider();
-        $nullableTypesData = [];
-
-        foreach ($typesData as $key => $value) {
-            $type = '?' . $key;
-            $value['type'] = $type;
-            $nullableTypesData[$type] = $value;
-        }
-
-        return $nullableTypesData;
-    }
-
     public function valuesOfWrongTypeProvider(): array
     {
         $r = fopen(__DIR__ . '/resources/test.txt', 'r');
@@ -192,5 +178,55 @@ trait TypesProviderTrait
         }
 
         return $data;
+    }
+
+    public function nullableTypesDataProvider(): array
+    {
+        return [
+            [
+                'actualType' => '?null',
+                'expectedType' => 'null',
+            ],
+            [
+                'actualType' => '?bool',
+                'expectedType' => '?bool',
+            ],
+            [
+                'actualType' => '?int',
+                'expectedType' => '?int',
+            ],
+            [
+                'actualType' => '?float',
+                'expectedType' => '?float',
+            ],
+            [
+                'actualType' => '?string',
+                'expectedType' => '?string',
+            ],
+            [
+                'actualType' => '?array',
+                'expectedType' => '?array',
+            ],
+            [
+                'actualType' => '?iterable',
+                'expectedType' => '?iterable',
+            ],
+            [
+                'actualType' => '?callable',
+                'expectedType' => '?callable',
+            ],
+            [
+                'actualType' => '?object',
+                'expectedType' => '?object',
+            ],
+            [
+                'actualType' => '?' . Obj1::class,
+                'expectedType' => '?' . Obj1::class,
+            ],
+            [
+                'actualType' => '?mixed',
+                'expectedType' => 'mixed',
+            ],
+        ];
     }
 }

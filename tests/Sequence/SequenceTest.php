@@ -29,17 +29,9 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider nullableTypesDataProvider
      */
-    public function testOfNullable(string $type): void
+    public function testOfNullable(string $actualType, string $expectedType): void
     {
-        $sequence = Sequence::of($type);
-        if ($type === '?null') {
-            $expectedType = 'null';
-        } elseif ($type === '?mixed') {
-            $expectedType = 'mixed';
-        } else {
-            $expectedType = $type;
-        }
-
+        $sequence = Sequence::of($actualType);
         self::assertEquals($expectedType, (string) $sequence->getType());
     }
 
@@ -80,9 +72,9 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider nullableTypesDataProvider
      */
-    public function testCopyNullable(string $type): void
+    public function testCopyNullable(string $actualType): void
     {
-        $sequence = Sequence::of($type);
+        $sequence = Sequence::of($actualType);
 
         $copy = $sequence->copy();
         self::assertTrue($copy->getType()->isNullable());
@@ -397,9 +389,9 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider nullableTypesDataProvider
      */
-    public function testPushNullable(string $type): void
+    public function testPushNullable(string $actualType): void
     {
-        $sequence = Sequence::of($type);
+        $sequence = Sequence::of($actualType);
         $sequence->push(null);
 
         self::assertCount(1, $sequence);

@@ -29,6 +29,15 @@ class MapTest extends TestCase
     }
 
     /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testOfNullable(string $actualType, string $expectedType): void
+    {
+        $map = Map::of($actualType, $actualType);
+        self::assertTrue($map->isOf($expectedType, $expectedType));
+    }
+
+    /**
      * @dataProvider keyValueTypesDataProvider
      */
     public function testClear(string $keyType, string $valueType, $key1, $value1): void
@@ -52,6 +61,17 @@ class MapTest extends TestCase
         self::assertNotSame($copy, $map);
         self::assertCount(1, $copy);
         self::assertSame($value1, $copy->get($key1));
+    }
+
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testCopyNullable(string $actualType, string $expectedType): void
+    {
+        $map = Map::of($actualType, $actualType);
+        $copy = $map->copy();
+
+        self::assertTrue($copy->isOf($expectedType, $expectedType));
     }
 
     /**
@@ -364,6 +384,18 @@ class MapTest extends TestCase
         self::assertCount(2, $map);
         self::assertEquals($value1, $map->get($key1));
         self::assertEquals($value2, $map->get($key2));
+    }
+
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testSetNullable(string $actualType): void
+    {
+        $map = Map::of($actualType, $actualType);
+        $map->set(null, null);
+        self::assertTrue($map->has(null));
+        self::assertTrue($map->hasValue(null));
+        self::assertNull($map->get(null));
     }
 
     /**

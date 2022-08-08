@@ -27,6 +27,15 @@ class SetTest extends TestCase
     }
 
     /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testOfNullable(string $actualType, string $expectedType): void
+    {
+        $set = Set::of($actualType);
+        self::assertEquals($expectedType, $set->getType());
+    }
+
+    /**
      * @dataProvider typesDataProvider
      */
     public function testAdd(string $type, $value1, $value2, $value3): void
@@ -39,6 +48,20 @@ class SetTest extends TestCase
         self::assertTrue($set->contains($value1));
         self::assertTrue($set->contains($value2));
         self::assertTrue($set->contains($value3));
+    }
+
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testAddNullable(string $actualType): void
+    {
+        $set = Set::of($actualType);
+        $set->add(null);
+        $set->add(null);
+
+        self::assertCount(1, $set);
+        self::assertContains(null, $set);
+        self::assertNull($set->pop());
     }
 
     /**
@@ -96,6 +119,18 @@ class SetTest extends TestCase
         self::assertNotSame($set, $copy);
         self::assertCount(1, $copy);
         self::assertSame($value1, $copy->pop());
+    }
+
+    /**
+     * @dataProvider nullableTypesDataProvider
+     */
+    public function testCopyNullable(string $actualType, string $expectedType): void
+    {
+        $set = Set::of($actualType);
+        $copy = $set->copy();
+        $copy->add(null);
+        self::assertTrue($copy->isOf($expectedType));
+        self::assertContains(null, $copy);
     }
 
     /**
