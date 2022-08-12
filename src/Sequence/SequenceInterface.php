@@ -45,6 +45,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(1) operation
      *
      * @return T
+     * @psalm-return T
      * @throws OutOfBoundsException
      */
     public function first();
@@ -56,6 +57,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      *
      * @param int $index
      * @return T
+     * @psalm-return T
      * @throws OutOfBoundsException
      */
     public function get(int $index);
@@ -83,6 +85,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(N) operation
      *
      * @param T $entry
+     * @psalm-param T $entry
      * @return bool
      */
     public function hasEntry($entry): bool;
@@ -94,6 +97,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(N) operation
      *
      * @param T $entry
+     * @psalm-param T $entry
      * @return int
      * @throws OutOfBoundsException
      */
@@ -106,6 +110,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      *
      * @param int $index
      * @param T $entry
+     * @psalm-param T $entry
      * @return void
      * @throws FrozenException
      * @throws TypeException
@@ -136,6 +141,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(1) operation
      *
      * @return T
+     * @psalm-return T
      * @throws OutOfBoundsException
      */
     public function last();
@@ -146,6 +152,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(1) operation
      *
      * @return T
+     * @psalm-return T
      * @throws FrozenException
      * @throws OutOfBoundsException
      */
@@ -157,6 +164,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(1) operation
      *
      * @param T $entry
+     * @psalm-param T $entry
      * @return void
      * @throws FrozenException
      * @throws TypeException
@@ -169,6 +177,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(N) operation, where N is the number of entries to push to the sequence
      *
      * @param T[] $entries
+     * @psalm-param T[] $entries
      * @return void
      * @throws FrozenException
      * @throws TypeException
@@ -192,6 +201,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(N) operation
      *
      * @param T $entry
+     * @psalm-param T $entry
      * @return bool
      * @throws FrozenException
      */
@@ -203,6 +213,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(1) operation
      *
      * @return T
+     * @psalm-return T
      * @throws FrozenException
      */
     public function shift();
@@ -220,6 +231,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * O(1) operation
      *
      * @param T $entry
+     * @psalm-param T $entry
      * @return void
      * @throws FrozenException
      * @throws TypeException
