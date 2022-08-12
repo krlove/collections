@@ -13,6 +13,10 @@ use SplDoublyLinkedList;
 use function iterator_to_array;
 use function sprintf;
 
+/**
+ * @psalm-template T
+ * @template-implements SequenceInterface<T>
+ */
 class Sequence implements SequenceInterface
 {
     use FreezeTrait;
@@ -31,6 +35,9 @@ class Sequence implements SequenceInterface
         return new self(TypeFactory::create($type));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function clear(): void
     {
         $this->assertNotFrozen();
@@ -38,6 +45,9 @@ class Sequence implements SequenceInterface
         $this->list = new SplDoublyLinkedList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function copy(): self
     {
         $sequence = Sequence::of((string)$this->getType());
@@ -49,11 +59,17 @@ class Sequence implements SequenceInterface
         return $sequence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function count(): int
     {
         return $this->list->count();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function first()
     {
         if ($this->isEmpty()) {
@@ -63,6 +79,9 @@ class Sequence implements SequenceInterface
         return $this->get(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function get(int $index)
     {
         if (!$this->has($index)) {
@@ -72,22 +91,34 @@ class Sequence implements SequenceInterface
         return $this->list[$index];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new SequenceIterator($this->list);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getType(): TypeInterface
     {
         return $this->type;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function has(int $index): bool
     {
         return $index >= 0 && $index < $this->list->count();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function hasEntry($entry): bool
     {
         if (!$this->type->isTypeOf($entry)) {
@@ -103,6 +134,9 @@ class Sequence implements SequenceInterface
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function indexOf($entry): int
     {
         if (!$this->type->isTypeOf($entry)) {
@@ -118,6 +152,9 @@ class Sequence implements SequenceInterface
         throw new OutOfBoundsException('Entry not found in the Sequence');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function insert(int $index, $entry): void
     {
         $this->assertNotFrozen();
@@ -131,16 +168,25 @@ class Sequence implements SequenceInterface
         $this->list->add($index, $entry);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isEmpty(): bool
     {
         return $this->count() === 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isOf(string $type): bool
     {
         return $type === (string)$this->getType();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function last()
     {
         if ($this->isEmpty()) {
@@ -150,6 +196,9 @@ class Sequence implements SequenceInterface
         return $this->list[$this->count() - 1];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function pop()
     {
         $this->assertNotFrozen();
@@ -161,6 +210,9 @@ class Sequence implements SequenceInterface
         return $this->list->pop();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function push($entry): void
     {
         $this->assertNotFrozen();
@@ -170,6 +222,9 @@ class Sequence implements SequenceInterface
         $this->list->push($entry);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function pushMultiple(array $entries): void
     {
         $this->assertNotFrozen();
@@ -179,6 +234,9 @@ class Sequence implements SequenceInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function remove(int $index): bool
     {
         $this->assertNotFrozen();
@@ -192,6 +250,9 @@ class Sequence implements SequenceInterface
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function removeEntry($entry): bool
     {
         $this->assertNotFrozen();
@@ -205,6 +266,9 @@ class Sequence implements SequenceInterface
         return $this->remove($index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function shift()
     {
         $this->assertNotFrozen();
@@ -216,11 +280,17 @@ class Sequence implements SequenceInterface
         return $this->list->shift();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toArray(): array
     {
         return iterator_to_array($this->getIterator());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function unshift($entry): void
     {
         $this->assertNotFrozen();
