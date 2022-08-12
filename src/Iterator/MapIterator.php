@@ -31,8 +31,7 @@ class MapIterator implements Iterator
     public function next()
     {
         next($this->keys);
-
-        return next($this->values);
+        next($this->values);
     }
 
     #[\ReturnTypeWillChange]
