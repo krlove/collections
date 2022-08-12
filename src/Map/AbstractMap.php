@@ -15,6 +15,12 @@ abstract class AbstractMap implements MapInterface
     protected TypeInterface $valueType;
     protected TypeInterface $keyType;
 
+    public function __construct(TypeInterface $keyType, TypeInterface $valueType)
+    {
+        $this->keyType = $keyType;
+        $this->valueType = $valueType;
+    }
+
     public function copy(): self
     {
         $map = new static($this->keyType, $this->valueType);

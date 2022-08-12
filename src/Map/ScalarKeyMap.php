@@ -25,11 +25,14 @@ class ScalarKeyMap extends AbstractMap
     public function __construct(TypeInterface $keyType, TypeInterface $valueType)
     {
         if (!in_array((string)$keyType, ['int', 'string'])) {
-            throw new TypeException(sprintf('Only int or string types supported as key type for %s, %s given', get_class($this), $keyType));
+            throw new TypeException(sprintf(
+                'Only int or string types supported as key type for %s, %s given',
+                get_class($this),
+                (string) $keyType
+            ));
         }
 
-        $this->keyType = $keyType;
-        $this->valueType = $valueType;
+        parent::__construct($keyType, $valueType);
     }
 
     #[\ReturnTypeWillChange]

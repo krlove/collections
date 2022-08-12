@@ -215,8 +215,8 @@ class Set implements SetInterface
             throw new TypeException(
                 sprintf(
                     'Unable to perform operation: types %s and %s are not compatible',
-                    $this->getType(),
-                    $set->getType()
+                    (string) $this->getType(),
+                    (string) $set->getType()
                 )
             );
         }

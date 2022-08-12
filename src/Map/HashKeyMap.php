@@ -7,7 +7,6 @@ namespace Krlove\Collections\Map;
 use Krlove\Collections\Exception\OutOfBoundsException;
 use Krlove\Collections\Hasher\Hasher;
 use Krlove\Collections\Iterator\MapIterator;
-use Krlove\Collections\Type\TypeInterface;
 use function array_key_exists;
 use function array_rand;
 use function array_search;
@@ -20,12 +19,6 @@ class HashKeyMap extends AbstractMap
 {
     private array $ks = [];
     private array $vs = [];
-
-    public function __construct(TypeInterface $keyType, TypeInterface $valueType)
-    {
-        $this->keyType = $keyType;
-        $this->valueType = $valueType;
-    }
 
     #[\ReturnTypeWillChange]
     public function count()

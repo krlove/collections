@@ -9,6 +9,9 @@ use function is_subclass_of;
 
 class TypeIntersection
 {
+    /**
+     * @psalm-suppress ArgumentTypeCoercion
+     */
     public static function between(TypeInterface $type1, TypeInterface $type2): ?string
     {
         if ((string)$type1 === (string)$type2) {
