@@ -13,7 +13,7 @@ use Krlove\Collections\Freezable\FreezableInterface;
 use Krlove\Collections\Type\TypeInterface;
 
 /**
- * Ordered collection of entries of the specified type
+ * Ordered collection of variables of specified type
  *
  * @psalm-template T
  * @template-extends IteratorAggregate<T>
@@ -31,7 +31,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function clear(): void;
 
     /**
-     * Copies the sequence. Copy is always unfrozen
+     * Copies the sequence. The copy is always unfrozen
      *
      * O(N) operation
      *
@@ -119,7 +119,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function insert(int $index, $entry): void;
 
     /**
-     * Returns true if the sequence is empty
+     * Returns true if the sequence is empty, false otherwise
      *
      * O(1) operation
      *
@@ -219,7 +219,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function shift();
 
     /**
-     * Returns array of entries in the Sequence
+     * Returns array of entries in the sequence
      *
      * @return array
      */

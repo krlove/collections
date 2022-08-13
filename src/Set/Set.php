@@ -14,6 +14,10 @@ use Krlove\Collections\Type\TypeInterface;
 use Krlove\Collections\Type\TypeIntersection;
 use function sprintf;
 
+/**
+ * @psalm-template T
+ * @template-implements SetInterface<T>
+ */
 class Set implements SetInterface
 {
     use FreezeTrait;
@@ -30,6 +34,9 @@ class Set implements SetInterface
         return new self(MapFactory::create($type, 'null'));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function add($member): void
     {
         $this->assertNotFrozen();
@@ -37,6 +44,9 @@ class Set implements SetInterface
         $this->map->set($member, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function addMultiple($members): void
     {
         $this->assertNotFrozen();
@@ -46,6 +56,9 @@ class Set implements SetInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function clear(): void
     {
         $this->assertNotFrozen();
@@ -53,11 +66,17 @@ class Set implements SetInterface
         $this->map->clear();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function contains($member): bool
     {
         return $this->map->has($member);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function copy(): self
     {
         $set = Set::of((string)$this->getType());
@@ -69,12 +88,18 @@ class Set implements SetInterface
         return $set;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->map->count();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function difference(SetInterface $set): SetInterface
     {
         $diffSet = self::of($this->getCommonTypeWith($set));
@@ -88,20 +113,33 @@ class Set implements SetInterface
         return $diffSet;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->map->keys());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getType(): TypeInterface
     {
         return $this->map->getKeyType();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function hasIntersectionWith(SetInterface $set): bool
     {
-        $this->getCommonTypeWith($set);
+        try {
+            $this->getCommonTypeWith($set);
+        } catch (TypeException $e) {
+            return false;
+        }
 
         if ($this->count() < $set->count()) {
             $iterated = $this;
@@ -120,6 +158,9 @@ class Set implements SetInterface
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function intersection(SetInterface $set): SetInterface
     {
         $intersectionSet = self::of($this->getCommonTypeWith($set));
@@ -141,19 +182,32 @@ class Set implements SetInterface
         return $intersectionSet;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isEmpty(): bool
     {
         return $this->map->isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isOf(string $type): bool
     {
         return $this->map->isKeyOf($type);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isSubsetOf(SetInterface $set): bool
     {
-        $this->getCommonTypeWith($set);
+        try {
+            $this->getCommonTypeWith($set);
+        } catch (TypeException $e) {
+            return false;
+        }
 
         if ($this->count() > $set->count()) {
             return false;
@@ -168,6 +222,9 @@ class Set implements SetInterface
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function pop()
     {
         $this->assertNotFrozen();
@@ -181,6 +238,9 @@ class Set implements SetInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function remove($member): bool
     {
         $this->assertNotFrozen();
@@ -188,11 +248,17 @@ class Set implements SetInterface
         return $this->map->remove($member);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toArray(): array
     {
         return $this->map->keys();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function union(SetInterface $set): SetInterface
     {
         $unionSet = self::of($this->getCommonTypeWith($set));

@@ -268,6 +268,17 @@ class SetTest extends TestCase
         self::assertTrue($set2->hasIntersectionWith($set1));
     }
 
+    public function testHasIntersectionDifferentTypes(): void
+    {
+        $set1 = Set::of('int');
+        $set1->add(1);
+        $set2 = Set::of('float');
+        $set2->add(1.0);
+
+        self::assertFalse($set1->hasIntersectionWith($set2));
+        self::assertFalse($set2->hasIntersectionWith($set1));
+    }
+
     /**
      * @dataProvider typesDataProvider
      */
@@ -354,6 +365,18 @@ class SetTest extends TestCase
             self::assertFalse($set1->isSubsetOf($set2));
         }
         self::assertTrue($set1->isSubsetOf($set1));
+    }
+
+    public function testIsSubsetOfDifferentTypes(): void
+    {
+        $set1 = Set::of('int');
+        $set1->add(1);
+
+        $set2 = Set::of('float');
+        $set2->add(1.0);
+
+        self::assertFalse($set1->isSubsetOf($set2));
+        self::assertFalse($set2->isSubsetOf($set1));
     }
 
     /**
