@@ -254,6 +254,19 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function shift();
 
     /**
+     * Returns the slice of the sequence.
+     * Behaves similarly to array_slice function
+     * @see https://www.php.net/manual/en/function.array-slice.php
+     *
+     * O(N) operation
+     *
+     * @param int $offset
+     * @param int|null $length
+     * @return SequenceInterface
+     */
+    public function slice(int $offset, ?int $length = null): SequenceInterface;
+
+    /**
      * Sorts entries in the sequence using comparison function.
      * Callable takes $entry1 and $entry2 as arguments. Must return 1 if $entry1 > $entry 2, -1 if $entry2 > $entry1,
      * 0 if $entry1 === $entry2

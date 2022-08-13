@@ -11,6 +11,7 @@ use Krlove\Collections\Set\Set;
 use Krlove\Collections\Type\TypeFactory;
 use Krlove\Collections\Type\TypeInterface;
 use SplDoublyLinkedList;
+use function array_slice;
 use function call_user_func;
 use function iterator_to_array;
 use function sprintf;
@@ -322,6 +323,18 @@ class Sequence implements SequenceInterface
         }
 
         return $this->list->shift();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function slice(int $offset, ?int $length = null): SequenceInterface
+    {
+        $slice = array_slice($this->toArray(), $offset, $length);
+        $sliced = Sequence::of((string) $this->type);
+        $sliced->pushMultiple($slice);
+
+        return $sliced;
     }
 
     /**

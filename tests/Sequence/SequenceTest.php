@@ -571,6 +571,48 @@ class SequenceTest extends TestCase
         self::assertTrue($sequence->isEmpty());
     }
 
+    /**
+     * @dataProvider sliceDataProvider
+     */
+    public function testSlice(array $entries, int $offset, ?int $length, array $expected): void
+    {
+        $sequence = Sequence::of('string');
+        $sequence->pushMultiple($entries);
+
+        $sliced = $sequence->slice($offset, $length);
+        self::assertSame($expected, $sliced->toArray());
+    }
+
+    public function sliceDataProvider(): array
+    {
+        return [
+            [
+                'entries' => ['a', 'b', 'c', 'd', 'e', 'f'],
+                'offset' => 2,
+                'length' => null,
+                'expected' => ['c', 'd', 'e', 'f'],
+            ],
+            [
+                'entries' => ['a', 'b', 'c', 'd', 'e', 'f'],
+                'offset' => -1,
+                'length' => 3,
+                'expected' => ['f'],
+            ],
+            [
+                'entries' => ['a', 'b', 'c', 'd', 'e', 'f'],
+                'offset' => 1,
+                'length' => -3,
+                'expected' => ['b', 'c'],
+            ],
+            [
+                'entries' => [],
+                'offset' => 1,
+                'length' => 2,
+                'expected' => [],
+            ],
+        ];
+    }
+
     public function testSort(): void
     {
         $sequence = Sequence::of('int');
