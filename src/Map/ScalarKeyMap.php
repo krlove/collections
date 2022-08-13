@@ -57,12 +57,6 @@ class ScalarKeyMap extends AbstractMap
         return $this->array[$key];
     }
 
-    #[\ReturnTypeWillChange]
-    public function getIterator()
-    {
-        return new ArrayIterator($this->array);
-    }
-
     public function has($key): bool
     {
         return array_key_exists($key, $this->array);

@@ -16,7 +16,7 @@ use Krlove\Collections\Type\TypeInterface;
  * Ordered collection of variables of specified type
  *
  * @psalm-template T
- * @template-extends IteratorAggregate<T>
+ * @template-implements IteratorAggregate<T>
  */
 interface SequenceInterface extends Countable, FreezableInterface, IteratorAggregate
 {
@@ -128,7 +128,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function isEmpty(): bool;
 
     /**
-     * Returns true if the sequence type is $type, false otherwise
+     * Returns true if the sequence's type is $type, false otherwise
      *
      * @param string $type
      * @return bool
@@ -219,7 +219,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function shift();
 
     /**
-     * Returns array of entries in the sequence
+     * Returns sequence's entries as array
      *
      * @return array
      */

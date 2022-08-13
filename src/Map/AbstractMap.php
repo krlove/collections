@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Krlove\Collections\Map;
 
+use ArrayIterator;
 use Krlove\Collections\Exception\OutOfBoundsException;
 use Krlove\Collections\Freezable\FreezeTrait;
 use Krlove\Collections\Type\TypeInterface;
@@ -25,11 +26,17 @@ abstract class AbstractMap implements MapInterface
     {
         $map = new static($this->keyType, $this->valueType);
 
-        foreach ($this as $key => $value) {
-            $map->set($key, $value);
+        foreach ($this as $pair) {
+            $map->set($pair->getKey(), $pair->getValue());
         }
 
         return $map;
+    }
+
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->toArray());
     }
 
     public function getKeyType(): TypeInterface

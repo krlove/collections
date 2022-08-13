@@ -171,16 +171,13 @@ class MapTest extends TestCase
     {
         $map = Map::of($keyType, $valueType);
         $map->set($key1, $value1);
-        foreach ($map as $key => $value) {
-            self::assertEquals($key1, $key);
-            self::assertEquals($value1, $value);
+        foreach ($map as $pair) {
+            self::assertInstanceOf(Pair::class, $pair);
+            self::assertEquals($key1, $pair->getKey());
+            self::assertEquals($value1, $pair->getValue());
         }
 
-        if ($keyType === 'int' || $keyType === 'string') {
-            self::assertInstanceOf(ArrayIterator::class, $map->getIterator());
-        } else {
-            self::assertInstanceOf(MapIterator::class, $map->getIterator());
-        }
+        self::assertInstanceOf(ArrayIterator::class, $map->getIterator());
     }
 
     /**

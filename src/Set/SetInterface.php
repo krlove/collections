@@ -16,7 +16,7 @@ use Krlove\Collections\Type\TypeInterface;
  * Collection of unique variables of specified type
  *
  * @psalm-template T
- * @template-extends IteratorAggregate<T>
+ * @template-implements IteratorAggregate<T>
  */
 interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 {
@@ -125,7 +125,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function isEmpty(): bool;
 
     /**
-     * Returns true if the set type is $type, false otherwise
+     * Returns true if the set's type is $type, false otherwise
      *
      * @param string $type
      * @return bool
@@ -167,7 +167,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function remove($member): bool;
 
     /**
-     * Returns members as array
+     * Returns set's members as array
      *
      * O(N) operation
      *
