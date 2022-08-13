@@ -274,6 +274,15 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function toArray(): array;
 
     /**
+     * Return new sequence, containing unique entries from this sequence
+     *
+     * O(N) operation
+     *
+     * @return SequenceInterface
+     */
+    public function unique(): SequenceInterface;
+
+    /**
      * Prepends the entry to the beginning of the sequence
      *
      * O(1) operation

@@ -611,6 +611,23 @@ class SequenceTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
+    public function testUnique(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3, $value1, $value2, $value3]);
+
+        $unique = $sequence->unique();
+        self::assertContains($value1, $unique);
+        self::assertContains($value2, $unique);
+        self::assertContains($value3, $unique);
+
+        $count = $type === 'null' ? 1 : ($type === 'bool' ? 2 : 3);
+        self::assertCount($count, $unique);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
     public function testUnshift(string $type, $value1, $value2, $value3): void
     {
         $sequence = Sequence::of($type);

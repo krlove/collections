@@ -7,6 +7,7 @@ namespace Krlove\Collections\Sequence;
 use Krlove\Collections\Exception\OutOfBoundsException;
 use Krlove\Collections\Freezable\FreezeTrait;
 use Krlove\Collections\Iterator\SequenceIterator;
+use Krlove\Collections\Set\Set;
 use Krlove\Collections\Type\TypeFactory;
 use Krlove\Collections\Type\TypeInterface;
 use SplDoublyLinkedList;
@@ -343,6 +344,22 @@ class Sequence implements SequenceInterface
     public function toArray(): array
     {
         return iterator_to_array($this->getIterator());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function unique(): SequenceInterface
+    {
+        $set = Set::of((string) $this->type);
+        foreach ($this->list as $entry) {
+            $set->add($entry);
+        }
+
+        $unique = Sequence::of((string) $this->type);
+        $unique->pushMultiple($set->toArray());
+
+        return $unique;
     }
 
     /**
