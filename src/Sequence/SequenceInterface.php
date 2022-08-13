@@ -258,6 +258,8 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * Callable takes $entry1 and $entry2 as arguments. Must return 1 if $entry1 > $entry 2, -1 if $entry2 > $entry1,
      * 0 if $entry1 === $entry2
      *
+     * O(N*log(N)) operation
+     *
      * @param callable $callable
      * @return void
      * @throws FrozenException
