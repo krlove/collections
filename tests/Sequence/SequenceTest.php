@@ -638,4 +638,21 @@ class SequenceTest extends TestCase
         self::assertSame($value2, $sequence->get(1));
         self::assertSame($value1, $sequence->get(2));
     }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testWalk(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+
+        $array = [];
+        $sequence->walk(function ($entry, int $index) use (&$array) {
+            $array[$index] = $entry;
+        });
+
+        self::assertCount(3, $array);
+        self::assertSame([$value1, $value2, $value3], $array);
+    }
 }

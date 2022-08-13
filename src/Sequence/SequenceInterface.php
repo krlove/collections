@@ -294,4 +294,15 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * @throws TypeException
      */
     public function unshift($entry): void;
+
+    /**
+     * Apply callable to all entries in the sequence.
+     * Callable takes $entry and $index as arguments. Return value of callable isn't used
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return void
+     */
+    public function walk(callable $callable): void;
 }

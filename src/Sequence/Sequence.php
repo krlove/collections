@@ -373,4 +373,14 @@ class Sequence implements SequenceInterface
 
         $this->list->unshift($entry);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function walk(callable $callable): void
+    {
+        foreach ($this->list as $index => $entry) {
+            call_user_func($callable, $entry, $index);
+        }
+    }
 }
