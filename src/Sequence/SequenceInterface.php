@@ -40,6 +40,18 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function copy(): self;
 
     /**
+     * Returns new instance of the sequence, filtered using the given callable.
+     * Callable takes $entry and $index as arguments and must return true so that the entry is added to the filtered
+     * sequence
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return SequenceInterface
+     */
+    public function filter(callable $callable): SequenceInterface;
+
+    /**
      * Returns the first entry in the sequence
      *
      * O(1) operation
@@ -147,6 +159,17 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
     public function last();
 
     /**
+     * Returns an array by applying callable to each entry of the sequence.
+     * Callable takes $entry and $index as arguments
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return array
+     */
+    public function map(callable $callable): array;
+
+    /**
      * Pops the entry off the end of the sequence
      *
      * O(1) operation
@@ -183,6 +206,18 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
      * @throws TypeException
      */
     public function pushMultiple(array $entries): void;
+
+    /**
+     * Reduce the sequence to a single value.
+     * Callable takes $carry, $entry and $index as arguments and must return the next $carry
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @param mixed $initial
+     * @return mixed
+     */
+    public function reduce(callable $callable, $initial);
 
     /**
      * Removes an entry by the index. Returns true, if given index existed in the sequence, false otherwise

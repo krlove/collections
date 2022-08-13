@@ -10,6 +10,7 @@ use Krlove\Collections\Iterator\SequenceIterator;
 use Krlove\Collections\Type\TypeFactory;
 use Krlove\Collections\Type\TypeInterface;
 use SplDoublyLinkedList;
+use function call_user_func;
 use function iterator_to_array;
 use function sprintf;
 
@@ -65,6 +66,21 @@ class Sequence implements SequenceInterface
     public function count(): int
     {
         return $this->list->count();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function filter(callable $callable): SequenceInterface
+    {
+        $filtered = Sequence::of((string) $this->getType());
+        foreach ($this->list as $index => $entry) {
+            if (call_user_func($callable, $entry, $index) === true) {
+                $filtered->push($entry);
+            }
+        }
+
+        return $filtered;
     }
 
     /**
@@ -199,6 +215,19 @@ class Sequence implements SequenceInterface
     /**
      * {@inheritDoc}
      */
+    public function map(callable $callable): array
+    {
+        $result = [];
+        foreach ($this->list as $index => $entry) {
+            $result[] = call_user_func($callable, $entry, $index);
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function pop()
     {
         $this->assertNotFrozen();
@@ -232,6 +261,19 @@ class Sequence implements SequenceInterface
         foreach ($entries as $entry) {
             $this->push($entry);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function reduce(callable $callable, $initial)
+    {
+        $carry = $initial;
+        foreach ($this->list as $index => $entry) {
+            $carry = call_user_func($callable, $carry, $entry, $index);
+        }
+
+        return $carry;
     }
 
     /**

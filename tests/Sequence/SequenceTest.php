@@ -97,6 +97,38 @@ class SequenceTest extends TestCase
         self::assertEquals(0, $sequence->count());
     }
 
+    public function testFilter(): void
+    {
+        $sequence = Sequence::of('int');
+        $sequence->pushMultiple([10, 20, 30, 40, 50, 60, 70]);
+
+        $filtered = $sequence->filter(function (int $entry) {
+            return $entry > 45;
+        });
+
+        self::assertCount(3, $filtered);
+        self::assertEquals(50, $filtered->get(0));
+        self::assertEquals(60, $filtered->get(1));
+        self::assertEquals(70, $filtered->get(2));
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testFilterWithIndex(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+        
+        $filtered = $sequence->filter(function ($entry, int $index) {
+            return $index % 2 == 0;
+        });
+        
+        self::assertCount(2, $filtered);
+        self::assertEquals($value1, $filtered->get(0));
+        self::assertEquals($value3, $filtered->get(1));
+    }
+
     /**
      * @dataProvider typesDataProvider
      */
@@ -333,6 +365,35 @@ class SequenceTest extends TestCase
         self::assertSame($value1, $sequence->last());
     }
 
+    public function testMap(): void
+    {
+        $sequence = Sequence::of('int');
+        $sequence->pushMultiple([1, 2, 3, 4, 5]);
+
+        $mapped = $sequence->map(function ($entry) {
+            return $entry * 2;
+        });
+
+        self::assertIsArray($mapped);
+        self::assertCount(5, $mapped);
+        self::assertSame([2,4,6,8,10], $mapped);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testMapWithIndex(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+
+        $mapped = $sequence->map(function ($entry, $index) {
+            return $index;
+        });
+
+        self::assertSame([0, 1, 2], $mapped);
+    }
+
     /**
      * @dataProvider typesDataProvider
      */
@@ -428,6 +489,33 @@ class SequenceTest extends TestCase
         $sequence->pushMultiple([$value1, $value2, $value3]);
 
         self::assertCount(3, $sequence);
+    }
+
+    public function testReduce(): void
+    {
+        $sequence = Sequence::of('int');
+        $sequence->pushMultiple([1, 2, 3, 4, 5]);
+
+        $reduced = $sequence->reduce(function ($carry, $entry) {
+            return $carry + $entry;
+        }, 5);
+
+        self::assertEquals(20, $reduced);
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testReduceWithIndex(string $type, $value1, $value2, $value3): void
+    {
+        $sequence = Sequence::of($type);
+        $sequence->pushMultiple([$value1, $value2, $value3]);
+
+        $reduced = $sequence->reduce(function ($carry, $entry, int $index) {
+            return $carry + $index;
+        }, 0);
+
+        self::assertEquals(3, $reduced);
     }
 
     /**
