@@ -571,6 +571,17 @@ class SequenceTest extends TestCase
         self::assertTrue($sequence->isEmpty());
     }
 
+    public function testSort(): void
+    {
+        $sequence = Sequence::of('int');
+        $sequence->pushMultiple([5, 3, 7, 2, 3, 4, 9, 1, 1, 0, 8]);
+
+        $sequence->sort(function ($entry1, $entry2) {
+            return $entry1 - $entry2;
+        });
+        self::assertSame([0, 1, 1, 2, 3, 3, 4, 5, 7, 8, 9], $sequence->toArray());
+    }
+
     /**
      * @dataProvider typesDataProvider
      */

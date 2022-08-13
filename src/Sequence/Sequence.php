@@ -13,6 +13,7 @@ use SplDoublyLinkedList;
 use function call_user_func;
 use function iterator_to_array;
 use function sprintf;
+use function usort;
 
 /**
  * @psalm-template T
@@ -320,6 +321,20 @@ class Sequence implements SequenceInterface
         }
 
         return $this->list->shift();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sort(callable $callable): void
+    {
+        $this->assertNotFrozen();
+
+        $entries = $this->toArray();
+        usort($entries, $callable);
+
+        $this->clear();
+        $this->pushMultiple($entries);
     }
 
     /**
