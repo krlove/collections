@@ -331,4 +331,14 @@ class Set implements SetInterface
 
         return $type;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function walk(callable $callable): void
+    {
+        foreach ($this as $member) {
+            call_user_func($callable, $member);
+        }
+    }
 }

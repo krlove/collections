@@ -505,4 +505,24 @@ class SetTest extends TestCase
         $set2 = Set::of('int');
         $set1->union($set2);
     }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
+    public function testWalk(string $type, $value1, $value2, $value3): void
+    {
+        $set = Set::of($type);
+        $set->addMultiple([$value1, $value2, $value3]);
+
+        $array = [];
+        $set->walk(function ($member) use (&$array) {
+            $array[] = $member;
+        });
+
+        $count = $type === 'null' ? 1 : ($type === 'bool' ? 2 : 3);
+        self::assertCount($count, $array);
+        self::assertContains($value1, $array);
+        self::assertContains($value2, $array);
+        self::assertContains($value3, $array);
+    }
 }

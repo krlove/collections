@@ -219,4 +219,15 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
      * @throws TypeException
      */
     public function union(SetInterface $set): SetInterface;
+
+    /**
+     * Apply callable to all members in the set.
+     * Callable takes $member as argument. Return value of callable isn't used
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return void
+     */
+    public function walk(callable $callable): void;
 }

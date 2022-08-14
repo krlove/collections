@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Krlove\Map;
 
-use ArrayIterator;
 use Exception;
 use Krlove\Collections\Exception\FrozenException;
 use Krlove\Collections\Exception\OutOfBoundsException;
-use Krlove\Collections\Iterator\MapIterator;
 use Krlove\Collections\Map\Map;
 use Krlove\Collections\Map\Pair;
 use PHPUnit\Framework\TestCase;
