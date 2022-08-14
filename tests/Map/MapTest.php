@@ -176,8 +176,6 @@ class MapTest extends TestCase
             self::assertEquals($key1, $pair->getKey());
             self::assertEquals($value1, $pair->getValue());
         }
-
-        self::assertInstanceOf(ArrayIterator::class, $map->getIterator());
     }
 
     /**

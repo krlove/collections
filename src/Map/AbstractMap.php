@@ -33,12 +33,6 @@ abstract class AbstractMap implements MapInterface
         return $map;
     }
 
-    #[\ReturnTypeWillChange]
-    public function getIterator()
-    {
-        return new ArrayIterator($this->toArray());
-    }
-
     public function getKeyType(): TypeInterface
     {
         return $this->keyType;

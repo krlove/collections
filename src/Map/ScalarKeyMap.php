@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Krlove\Collections\Map;
 
-use ArrayIterator;
 use Krlove\Collections\Exception\OutOfBoundsException;
 use Krlove\Collections\Exception\TypeException;
+use Krlove\Collections\Iterator\ScalarKeyMapIterator;
 use Krlove\Collections\Type\TypeInterface;
 use function array_key_exists;
 use function array_keys;
@@ -55,6 +55,12 @@ class ScalarKeyMap extends AbstractMap
         }
 
         return $this->array[$key];
+    }
+
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ScalarKeyMapIterator($this->array);
     }
 
     public function has($key): bool

@@ -6,6 +6,8 @@ namespace Krlove\Collections\Map;
 
 use Krlove\Collections\Exception\OutOfBoundsException;
 use Krlove\Collections\Hasher\Hasher;
+use Krlove\Collections\Iterator\HashKeyMapIterator;
+use Traversable;
 use function array_key_exists;
 use function array_rand;
 use function array_search;
@@ -42,6 +44,12 @@ class HashKeyMap extends AbstractMap
         $hashedKey = Hasher::hash($key);
 
         return $this->vs[$hashedKey];
+    }
+
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new HashKeyMapIterator($this->ks, $this->vs);
     }
 
     public function has($key): bool
