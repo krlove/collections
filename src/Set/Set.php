@@ -272,12 +272,11 @@ class Set implements SetInterface
      */
     public function reduce(callable $callable, $initial)
     {
-        $carry = $initial;
         foreach ($this as $member) {
-            $carry = call_user_func($callable, $carry, $member);
+            $initial = call_user_func($callable, $initial, $member);
         }
 
-        return $carry;
+        return $initial;
     }
 
     /**

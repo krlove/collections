@@ -42,7 +42,7 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
 
     /**
      * Returns new instance of the map, filtered using the given callable.
-     * Callable takes Pair object as argument and must return true so that the key-value pair is added to the
+     * Callable takes $pair as argument and must return true so that the key-value pair is added to the
      * resulted map
      *
      * O(N) operation
@@ -174,6 +174,18 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
      * @throws OutOfBoundsException
      */
     public function pop(): Pair;
+
+    /**
+     * Reduce the map to a single value.
+     * Callable takes $carry and $pair as arguments and must return the next $carry
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @param mixed $initial
+     * @return mixed
+     */
+    public function reduce(callable $callable, $initial);
 
     /**
      * Removes the pair by the given key from the map. Returns true, if the key existed in the map, false otherwise

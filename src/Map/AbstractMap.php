@@ -88,6 +88,15 @@ abstract class AbstractMap implements MapInterface
         return true;
     }
 
+    public function reduce(callable $callable, $initial)
+    {
+        foreach ($this as $pair) {
+            $initial = call_user_func($callable, $pair, $initial);
+        }
+
+        return $initial;
+    }
+
     public function removeValue($value): bool
     {
         $this->assertNotFrozen();

@@ -174,6 +174,14 @@ class Map implements MapInterface
     /**
      * {@inheritDoc}
      */
+    public function reduce(callable $callable, $initial)
+    {
+        return $this->realMap->reduce($callable, $initial);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function remove($key): bool
     {
         $this->assertNotFrozen();

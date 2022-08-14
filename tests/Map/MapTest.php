@@ -345,6 +345,21 @@ class MapTest extends TestCase
         $map->pop();
     }
 
+    public function testReduce(): void
+    {
+        $map = Map::of('int', 'int');
+        $map->set(4, 5);
+        $map->set(2, 6);
+        $map->set(1, 1);
+        $map->set(7, -2);
+
+        $reduced = $map->reduce(function (Pair $pair, $carry) {
+            return $carry + $pair->getKey() * $pair->getValue();
+        }, 0);
+
+        self::assertEquals(19, $reduced);
+    }
+
     /**
      * @dataProvider keyValueTypesDataProvider
      */

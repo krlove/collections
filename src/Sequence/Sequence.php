@@ -271,12 +271,11 @@ class Sequence implements SequenceInterface
      */
     public function reduce(callable $callable, $initial)
     {
-        $carry = $initial;
         foreach ($this->list as $index => $entry) {
-            $carry = call_user_func($callable, $carry, $entry, $index);
+            $initial = call_user_func($callable, $initial, $entry, $index);
         }
 
-        return $carry;
+        return $initial;
     }
 
     /**
