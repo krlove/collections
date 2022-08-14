@@ -165,6 +165,17 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
     public function keys(): array;
 
     /**
+     * Returns an array by applying callable to each key-value pair of the map.
+     * Callable takes $pair as argument
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return array
+     */
+    public function map(callable $callable): array;
+
+    /**
      * Pops random key-value pair off the map
      *
      * O(1) operation

@@ -88,6 +88,16 @@ abstract class AbstractMap implements MapInterface
         return true;
     }
 
+    public function map(callable $callable): array
+    {
+        $result = [];
+        foreach ($this as $pair) {
+            $result[] = call_user_func($callable, $pair);
+        }
+
+        return $result;
+    }
+
     public function reduce(callable $callable, $initial)
     {
         foreach ($this as $pair) {

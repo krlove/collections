@@ -322,6 +322,20 @@ class MapTest extends TestCase
         self::assertContains($key2, $keys);
     }
 
+    public function testMap(): void
+    {
+        $map = Map::of('string', 'int');
+        $map->set('apple', 10);
+        $map->set('orange', 20);
+        $map->set('pear', 30);
+
+        $array = $map->map(function (Pair $pair) {
+            return $pair->getKey() . ': ' . $pair->getValue();
+        });
+
+        self::assertSame(['apple: 10', 'orange: 20', 'pear: 30'], $array);
+    }
+
     /**
      * @dataProvider keyValueTypesDataProvider
      */

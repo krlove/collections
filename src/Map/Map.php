@@ -164,6 +164,14 @@ class Map implements MapInterface
     /**
      * {@inheritDoc}
      */
+    public function map(callable $callable): array
+    {
+        return $this->realMap->map($callable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function pop(): Pair
     {
         $this->assertNotFrozen();
