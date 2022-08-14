@@ -114,6 +114,9 @@ class Set implements SetInterface
         return $diffSet;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function filter(callable $callable): SetInterface
     {
         $set = Set::of((string) $this->getType());
@@ -249,6 +252,19 @@ class Set implements SetInterface
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException('Can not pop from an empty Set');
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function reduce(callable $callable, $initial)
+    {
+        $carry = $initial;
+        foreach ($this as $member) {
+            $carry = call_user_func($callable, $carry, $member);
+        }
+
+        return $carry;
     }
 
     /**

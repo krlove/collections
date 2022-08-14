@@ -427,6 +427,18 @@ class SetTest extends TestCase
         $set->pop();
     }
 
+    public function testReduce(): void
+    {
+        $set = Set::of('int');
+        $set->addMultiple([1, 2, 3, 4, 5]);
+
+        $reduced = $set->reduce(function ($carry, $member) {
+            return $carry + $member;
+        }, 5);
+
+        self::assertEquals(20, $reduced);
+    }
+
     /**
      * @dataProvider typesDataProvider
      */

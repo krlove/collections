@@ -166,6 +166,18 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function pop();
 
     /**
+     * Reduce the set to a single value.
+     * Callable takes $carry and $member as arguments and must return the next $carry
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @param mixed $initial
+     * @return mixed
+     */
+    public function reduce(callable $callable, $initial);
+
+    /**
      * Removes the member from the set. Returns true if the member existed in the set, false otherwise
      *
      * O(1) operation
