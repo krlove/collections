@@ -59,6 +59,14 @@ class Map implements MapInterface
     /**
      * {@inheritDoc}
      */
+    public function filter(callable $callable): MapInterface
+    {
+        return $this->realMap->filter($callable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function get($key)
     {
         return $this->realMap->get($key);

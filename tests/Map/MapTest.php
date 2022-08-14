@@ -96,6 +96,24 @@ class MapTest extends TestCase
         self::assertCount(0, $map);
     }
 
+    public function testFilter(): void
+    {
+        $map = Map::of('int', 'int');
+        $map->set(2, 4);
+        $map->set(3, 1);
+        $map->set(5, 0);
+        $map->set(1, 2);
+        $map->set(7, -5);
+
+        $filtered = $map->filter(function (Pair $pair) {
+            return $pair->getKey() + $pair->getValue() > 4;
+        });
+
+        self::assertCount(2, $filtered);
+        self::assertEquals(4, $filtered->get(2));
+        self::assertEquals(0, $filtered->get(5));
+    }
+
     /**
      * @dataProvider keyValueTypesDataProvider
      */

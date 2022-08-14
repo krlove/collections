@@ -41,6 +41,18 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
     public function copy(): self;
 
     /**
+     * Returns new instance of the map, filtered using the given callable.
+     * Callable takes Pair object as argument and must return true so that the key-value pair is added to the
+     * resulted map
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return MapInterface
+     */
+    public function filter(callable $callable): MapInterface;
+
+    /**
      * Returns a value by given key
      *
      * O(1) operation

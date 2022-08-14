@@ -41,7 +41,7 @@ interface SequenceInterface extends Countable, FreezableInterface, IteratorAggre
 
     /**
      * Returns new instance of the sequence, filtered using the given callable.
-     * Callable takes $entry and $index as arguments and must return true so that the entry is added to the filtered
+     * Callable takes $entry and $index as arguments and must return true so that the entry is added to the resulted
      * sequence
      *
      * O(N) operation

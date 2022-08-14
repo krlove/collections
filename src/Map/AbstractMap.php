@@ -8,6 +8,7 @@ use ArrayIterator;
 use Krlove\Collections\Exception\OutOfBoundsException;
 use Krlove\Collections\Freezable\FreezeTrait;
 use Krlove\Collections\Type\TypeInterface;
+use function call_user_func;
 
 abstract class AbstractMap implements MapInterface
 {
@@ -28,6 +29,19 @@ abstract class AbstractMap implements MapInterface
 
         foreach ($this as $pair) {
             $map->set($pair->getKey(), $pair->getValue());
+        }
+
+        return $map;
+    }
+
+    public function filter(callable $callable): MapInterface
+    {
+        $map = Map::of((string) $this->getKeyType(), (string) $this->getValueType());
+        /** @var Pair $pair */
+        foreach ($this as $pair) {
+            if (call_user_func($callable, $pair) === true) {
+                $map->set($pair->getKey(), $pair->getValue());
+            }
         }
 
         return $map;
