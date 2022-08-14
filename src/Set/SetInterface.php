@@ -89,7 +89,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 
     /**
      * Returns new instance of the set, filtered using the given callable.
-     * Callable takes $member as argument and must return true so that the member is added to the resulted set
+     * Callable takes $member as an argument and must return true so that the member is added to the resulted set
      *
      * O(N) operation
      *
@@ -155,7 +155,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 
     /**
      * Returns an array by applying callable to each member of the set.
-     * Callable takes $member as argument
+     * Callable takes $member as an argument
      *
      * O(N) operation
      *
@@ -222,7 +222,7 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
 
     /**
      * Apply callable to all members in the set.
-     * Callable takes $member as argument. Return value of callable isn't used
+     * Callable takes $member as an argument. Return value of callable isn't used
      *
      * O(N) operation
      *

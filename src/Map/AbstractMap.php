@@ -119,4 +119,11 @@ abstract class AbstractMap implements MapInterface
 
         return $this->remove($key);
     }
+
+    public function walk(callable $callable): void
+    {
+        foreach ($this as $pair) {
+            call_user_func($callable, $pair);
+        }
+    }
 }

@@ -474,4 +474,21 @@ class MapTest extends TestCase
         self::assertContains($value1, $values);
         self::assertContains($value2, $values);
     }
+
+    /**
+     * @dataProvider keyValueTypesDataProvider
+     */
+    public function testWalk(string $keyType, string $valueType, $key1, $value1): void
+    {
+        $map = Map::of($keyType, $valueType);
+        $map->set($key1, $value1);
+
+        $array = [];
+        $map->walk(function (Pair $pair) use (&$array) {
+            $array[] = $pair->getKey();
+            $array[] = $pair->getValue();
+        });
+
+        self::assertEquals([$key1, $value1], $array);
+    }
 }

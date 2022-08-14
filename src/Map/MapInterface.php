@@ -42,7 +42,7 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
 
     /**
      * Returns new instance of the map, filtered using the given callable.
-     * Callable takes $pair as argument and must return true so that the key-value pair is added to the
+     * Callable takes $pair as an argument and must return true so that the key-value pair is added to the
      * resulted map
      *
      * O(N) operation
@@ -166,7 +166,7 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
 
     /**
      * Returns an array by applying callable to each key-value pair of the map.
-     * Callable takes $pair as argument
+     * Callable takes $pair as an argument
      *
      * O(N) operation
      *
@@ -253,4 +253,15 @@ interface MapInterface extends Countable, FreezableInterface, IteratorAggregate
      * @psalm-return TValue[]
      */
     public function values(): array;
+
+    /**
+     * Apply callable to all pairs in the map.
+     * Callable takes $pair as an argument. Return value of callable isn't used
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return void
+     */
+    public function walk(callable $callable): void;
 }

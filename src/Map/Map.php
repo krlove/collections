@@ -232,4 +232,12 @@ class Map implements MapInterface
     {
         return $this->realMap->values();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function walk(callable $callable): void
+    {
+        $this->realMap->walk($callable);
+    }
 }
