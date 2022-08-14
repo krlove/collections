@@ -88,6 +88,17 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function difference(SetInterface $set): SetInterface;
 
     /**
+     * Returns new instance of the set, filtered using the given callable.
+     * Callable takes $member as argument and must return true so that the member is added to the filtered set
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return SetInterface
+     */
+    public function filter(callable $callable): SetInterface;
+
+    /**
      * Returns the type of the sequence
      *
      * @return TypeInterface

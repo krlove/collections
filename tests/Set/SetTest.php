@@ -185,6 +185,27 @@ class SetTest extends TestCase
     /**
      * @dataProvider typesDataProvider
      */
+    public function testFilter(string $type, $value1, $value2): void
+    {
+        $set = Set::of($type);
+        $set->addMultiple([$value1, $value2]);
+
+        $filtered = $set->filter(function ($member) use ($value2) {
+            return $member !== $value2;
+        });
+
+        if ($type === 'null') {
+            self::assertCount(0, $filtered);
+        } else {
+            self::assertCount(1, $filtered);
+            self::assertContains($value1, $filtered);
+            self::assertNotContains($value2, $filtered);
+        }
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     */
     public function testFreeze(string $type, $value1): void
     {
         $set = Set::of($type);

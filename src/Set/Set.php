@@ -12,6 +12,7 @@ use Krlove\Collections\Map\MapFactory;
 use Krlove\Collections\Map\MapInterface;
 use Krlove\Collections\Type\TypeInterface;
 use Krlove\Collections\Type\TypeIntersection;
+use function call_user_func;
 use function sprintf;
 
 /**
@@ -111,6 +112,18 @@ class Set implements SetInterface
         }
 
         return $diffSet;
+    }
+
+    public function filter(callable $callable): SetInterface
+    {
+        $set = Set::of((string) $this->getType());
+        foreach ($this as $member) {
+            if (call_user_func($callable, $member) === true) {
+                $set->add($member);
+            }
+        }
+
+        return $set;
     }
 
     /**
