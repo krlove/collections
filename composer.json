@@ -1,4 +1,13 @@
 {
+    "name": "krlove/collections",
+    "description": "Strictly typed data structures for PHP",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "php",
+        "collections",
+        "strict types"
+    ],
     "autoload": {
         "psr-4": {
             "Krlove\\Collections\\": "./src"
