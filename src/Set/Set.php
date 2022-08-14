@@ -241,6 +241,19 @@ class Set implements SetInterface
     /**
      * {@inheritDoc}
      */
+    public function map(callable $callable): array
+    {
+        $result = [];
+        foreach ($this as $member) {
+            $result[] = call_user_func($callable, $member);
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function pop()
     {
         $this->assertNotFrozen();

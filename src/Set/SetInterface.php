@@ -154,6 +154,17 @@ interface SetInterface extends Countable, FreezableInterface, IteratorAggregate
     public function isSubsetOf(SetInterface $set): bool;
 
     /**
+     * Returns an array by applying callable to each member of the set.
+     * Callable takes $member as argument
+     *
+     * O(N) operation
+     *
+     * @param callable $callable
+     * @return array
+     */
+    public function map(callable $callable): array;
+
+    /**
      * Pops random element off the set
      *
      * O(1) operation

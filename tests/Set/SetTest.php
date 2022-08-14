@@ -400,6 +400,20 @@ class SetTest extends TestCase
         self::assertFalse($set2->isSubsetOf($set1));
     }
 
+    public function testMap(): void
+    {
+        $set = Set::of('int');
+        $set->addMultiple([1, 2, 3, 4, 5]);
+
+        $mapped = $set->map(function ($member) {
+            return $member * 2;
+        });
+
+        self::assertIsArray($mapped);
+        self::assertCount(5, $mapped);
+        self::assertSame([2,4,6,8,10], $mapped);
+    }
+
     /**
      * @dataProvider typesDataProvider
      */
